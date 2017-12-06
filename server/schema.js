@@ -12,15 +12,15 @@ export default `
 	}
 
 	enum Sex{
-		male
-		female
+		MALE
+		FEMALE
 	}
 
 	type Palette {
 		keyID: Int
 		title: String
 		category: String
-		author: Author
+		author: Customer
 		tags: [String]
 		src_file: String
 		createdAt: String
@@ -61,7 +61,7 @@ export default `
 		UpdateAudience(client: UpdateAudienceInput!): Audience!
 		CreatePlatform(platform: [CreatePlatformInput!]): [Platform!]!
 		UpdatePlatform(platform: UpdatePlatformInput!): Platform!
-		RemoveEntries(palette: String!, user: String!, platform: String!): Boolean!
+		RemoveEntries(palette: String!, person: String!, platform: String!): Boolean!
 	}
 
 	input CreateAudienceInput {
