@@ -36,7 +36,7 @@ Customer.reset = function (options, audience, callback) {
 
 Customer.query = `
   query GetCustomers{
-    customer{
+    customers{
       keyID
       _name
       email

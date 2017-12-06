@@ -82,7 +82,7 @@ export default `
 	input CreatePaletteInput {
 		title: String!
 		category: String!
-		author: String!
+		author: String
 		tags: [String!]
 		src_file: String!
 	}

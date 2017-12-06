@@ -1,13 +1,19 @@
 // import Faker from 'faker';
-// export default {
-// 	Query: {
-// 		items: ({ Item }, { options, limit, sort }) => Item.get(options, limit, sort, Item.disconnect),
-// 		users: ({ User }, { options, limit, sort }) => User.get(options, limit, sort, User.disconnect, 'invoice'),
-// 		clients: ({ Client }, { options, limit, sort }) => Client.get(options, limit, sort, Client.disconnect),
-// 		invoices: ({ Invoice }, { options, limit, sort }) => Invoice.get(options, limit, sort, Invoice.disconnect, 'user')
-// 	},
-// 	Mutation: {
-// 		CustomOrder: async ({ Client }, { client }) => Client.set(client, Client.disconnect),
+import UUID from 'uuid';
+export default {
+  Query: {
+    palettes: ({ Palette }, { options, limit, sort }) => Palette.get(options, limit, sort, Palette.disconnect),
+    customers: ({ Customer }, { options, limit, sort }) => Customer.get(options, limit, sort, Customer.disconnect),
+    audience: ({ Audience }, { options, limit, sort }) => Audience.get(options, limit, sort, Audience.disconnect),
+    platforms: ({ PLatform }, { options, limit, sort }) => PLatform.get(options, limit, sort, PLatform.disconnect)
+  },
+  Mutation: {
+    CreatePalette: async ({ Palette }, { palette }) => {
+      const keyID = UUID.v4();
+      palette.keyID = keyID;
+      return Palette.set(palette, Palette.disconnect)
+    }
+  }
 // 		MakeRegularOrder: async ({ Invoice, User }, { client, invoice }) => {
 // 	    let check, invoice_number;
 // 	    do{
@@ -61,4 +67,4 @@
 // 	    return response;
 // 	  }
 // 	}
-// }
+}

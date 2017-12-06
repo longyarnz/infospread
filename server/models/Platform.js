@@ -32,16 +32,18 @@ Platform.erase = function(doc, callback){
   return Platform.remove(doc, callback);
 }
 
-Platform.query = `query GetPlatforms {
-  items {
-    keyID
-    title
-    category
-    tags
-    author
-    src_file
+Platform.query = `
+  query GetPlatforms {
+    platforms {
+      keyID
+      title
+      category
+      tags
+      author
+      src_file
+    }
   }
-}`;
+`;
 
 Platform.disconnect = () => Mongoose.disconnect(() => console.info('Database Disconnected...'));
 
