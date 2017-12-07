@@ -17,7 +17,8 @@ export default `
 	}
 
 	type Palette {
-		keyID: Int
+		keyID: String
+		caption: String
 		title: String
 		category: String
 		author: Customer
@@ -53,7 +54,7 @@ export default `
 	}
 
 	type Mutation {
-		RegisterCustomer(user:  CreateCustomerInput!): Customer!
+		RegisterCustomer(user: CreateCustomerInput!): Customer!
 		UpdateCustomer(user: UpdateCustomerInput!): Customer!
 		CreatePalette(palette: [CreatePaletteInput!]): [Palette!]!
 		UpdatePalette(palette: UpdatePaletteInput!): Palette!
@@ -81,6 +82,7 @@ export default `
 
 	input CreatePaletteInput {
 		title: String!
+		caption: String!
 		category: String!
 		author: String
 		tags: [String!]
@@ -102,6 +104,7 @@ export default `
 	}
 
 	input UpdateCustomerInput {
+		keyID: String!
 		_name: String
 		email: String
 		sex: Sex

@@ -20,9 +20,9 @@ Palette.get = function(options = {}, limit = 1000, sort = '', callback, populate
   return Palette.find(options, project, { limit, sort, populate }, callback);
 }
 
-Palette.set = function(items, callback){
+Palette.set = function(palettes, callback){
   connect();
-  return Palette.create(items, callback);
+  return Palette.create(palettes, callback);
 }
 
 Palette.reset = function(options, items, callback){

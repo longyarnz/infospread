@@ -6,9 +6,10 @@ export default {
     platforms: ({ Platform }, { options, limit, sort }) => Platform.get(options, limit, sort, Platform.disconnect)
   },
   Mutation: {
-    CreatePalette: ({ Palette }, { palette }) => {
-      return Palette.set(palette, Palette.disconnect)
-    },
+    CreatePalette: ({ Palette }, { palette }) => Palette.set(palette, Palette.disconnect),
+    CreatePlatform: ({ Platform }, { platform }) => Platform.set(platform, Platform.disconnect),
+    RegisterCustomer: ({ Customer }, { user }) => Customer.set(user, Customer.disconnect),
+    RegisterAudience: ({ Audience }, { audience }) => Audience.set(audience, Audience.disconnect),
     UpdatePalette: ({ Palette }, { palette }) => {
       const { keyID } = palette;
       return Palette.reset({ keyID }, palette).then(async i => {
@@ -16,9 +17,6 @@ export default {
         palette = await Palette.find({ keyID }, Palette.disconnect);
         return palette[0];
       }); 
-    },
-    CreatePlatform: ({ Platform }, { platform }) => {
-      return Platform.set(platform, Platform.disconnect)
     },
     UpdatePlatform: ({ Platform }, { platform }) => {
       const { keyID } = platform;
@@ -28,23 +26,17 @@ export default {
         return platform[0];
       });
     },
-    RegisterCustomer: ({ Customer }, { customer }) => {
-      return (Customer.set(customer, Customer.disconnect))[0]
-    },
-    UpdateCustomer: ({ Customer }, { customer }) => {
-      const { keyID } = customer;
-      return Customer.reset({ keyID }, customer).then(async i => {
+    UpdateCustomer: ({ Customer }, { user }) => {
+      const { keyID } = user;
+      return Customer.reset({ _id: keyID }, user).then(i => {
+        console.log(i);
         if (i.nModified === 0) return null;
-        customer = await Customer.find({ keyID }, Customer.disconnect);
-        return customer[0];
+        return Customer.find({ _id: keyID }, Customer.disconnect).then(res => res[0]);
       });
-    },
-    RegisterAudience: ({ Audience }, { audience }) => {
-      return Audience.set(audience, Audience.disconnect)
     },
     UpdateAudience: ({ Audience }, { audience }) => {
       const { keyID } = audience;
-      return Audience.reset({ keyID }, audience).then(async i => {
+      return Audience.reset({ _id: keyID }, audience).then(async i => {
         if (i.nModified === 0) return null;
         audience = await Audience.find({ keyID }, Audience.disconnect);
         return audience[0];
@@ -74,9 +66,17 @@ export default {
       return options > 0;
     }
   },
-  Palette: obj => obj,
-  author: ({ author }, a, b, info) => {
-    console.log([ author, info ]);
-
+  Palette: {
+    author: ({ author }, a, b, { rootValue }) => {
+      console.log(author);
+      const { Customer } = rootValue;
+      return Customer.get({ _id: author }, Customer.disconnect).then(response => response[0]);
+    }
+  },
+  Customer: {
+    palettes: ({ palettes }, a, b, { rootValue }) => {
+      const { Palette } = rootValue;
+      return Palette.get({ _id: {$in: palettes }}, Palette.disconnect);
+    }
   }
 }

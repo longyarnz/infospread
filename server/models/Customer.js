@@ -8,30 +8,30 @@ const customerSchema = new Schema({
   email: { type: String, required: true },
   sex: { type: String, required: true },
   phone: { type: Number, required: true },
-  palletes: { type: [String], required: true },
+  palettes: { type: [String], default: [] },
   createdAt: { type: Date, default: Date.now }
 });
 
 const Customer = Mongoose.model('Customer', customerSchema);
 
-Customer.get = function (options = {}, limit = 100, sort = '', callback, populate = '', project = '') {
+Customer.get = function (options = {}, limit = 100, sort = '', callback, project = '') {
   connect();
-  return Customer.find(options, project, { limit, sort, populate }, callback);
+  return this.find(options, project, { limit, sort }, callback);
 }
 
-Customer.set = function (audience, callback) {
+Customer.set = function (customer, callback) {
   connect();
-  return Customer.create(audience, callback);
+  return this.create(customer, callback);
 }
 
 Customer.erase = function (doc, callback) {
   connect();
-  return Customer.remove(doc, callback);
+  return this.remove(doc, callback);
 }
 
-Customer.reset = function (options, audience, callback) {
+Customer.reset = function (options, customer, callback) {
   connect();
-  return Customer.update(options, audience, callback);
+  return this.update(options, customer, callback);
 }
 
 Customer.query = `

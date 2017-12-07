@@ -12,7 +12,7 @@ const audienceSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const Audience = Mongoose.model('Audience', audienceSchema, { collectionName: 'audience'});
+const Audience = Mongoose.model('Audience', audienceSchema, 'audience');
 
 Audience.get = function(options = {}, limit = 100, sort = '', callback, populate = '', project = ''){
   connect();
