@@ -50,20 +50,6 @@ export default {
       return options;
     }
   },
-  // Palette: {
-  //   author: ({ author }, a, b, { rootValue }) => {
-  //     console.log(author);
-  //     const { Customer } = rootValue;
-  //     return Customer.get({ _id: author }, Customer.disconnect).then(response => response[0]);
-  //   }
-  // },
-  // Customer: {
-  //   palettes: ({ palettes }, a, b, { rootValue }) => {
-  //     console.log(palettes);
-  // const { Palette } = rootValue;
-  // return Palette.get({ _id: {$in: palettes }}, Palette.disconnect);
-  //   }
-  // },
   Report: {
     status: ({ ok }) => ok > 0,
   }
