@@ -25,7 +25,6 @@ export default {
     UpdateAudience: ({ Audience }, { viewer }) => performUpdate(Audience, viewer),
     RemoveEntries: async ({ Palette, Customer, Audience, Platform }, order) => {
       let model, options;
-      console.log(order);
       for (const fields in order){
         options = { _id: order[fields] };
         console.log(options);
@@ -44,7 +43,6 @@ export default {
           break;
         }
         options = await model.erase(options, model.disconnect);
-        console.log(options.result);
         options = options.result;
       }    
       return options;
