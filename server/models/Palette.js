@@ -1,6 +1,7 @@
 import UUID from 'uuid';
 import Mongoose, { Schema } from 'mongoose';
 import connect from '../mongoDB';
+import Dataloader from 'dataloader';
 
 const paletteSchema = new Schema({
   _id: { type: String, default: UUID.v4, alias: 'keyID' },
@@ -15,9 +16,9 @@ const paletteSchema = new Schema({
 
 const Palette = Mongoose.model('Palette', paletteSchema);
 
-Palette.get = function(options = {}, limit = 1000, sort = '', callback, populate = '', project = ''){
+Palette.get = function(options = {}, limit = 1000, sort = '', callback, populate = '', select = ''){
   connect();
-  return this.find(options, project, { limit, sort, populate }, callback);
+  return this.find(options).limit(limit).sort(sort).populate(populate).select(select).exec(callback);
 }
 
 Palette.set = function(palettes, callback){
