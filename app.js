@@ -27,5 +27,5 @@ App.post('/graphql', graphHTTP({
 }));
 App.listen(PORT, HOST, () => {
   clearConsole();
-  console.log(`Heroku Server Listening on Port http://${HOST}:${PORT}...`);
+  console.log(`Server Listening at http://${HOST}:${PORT}`);
 });

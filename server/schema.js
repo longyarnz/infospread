@@ -46,23 +46,27 @@ export default `
 	}
 
 	type Platform {
-		keyID: Int
+		keyID: String
 		title: String
 		category: String
 		src_file: String
 		createdAt: String
 	}
 
+	type Report {
+		status: Boolean,
+	}
+
 	type Mutation {
-		RegisterCustomer(user: CreateCustomerInput!): Customer!
+		RegisterCustomer(users: CreateCustomerInput!): Customer!
 		UpdateCustomer(user: UpdateCustomerInput!): Customer!
-		CreatePalette(palette: [CreatePaletteInput!]): [Palette!]!
+		CreatePalette(palettes: [CreatePaletteInput!]): [Palette!]!
 		UpdatePalette(palette: UpdatePaletteInput!): Palette!
-		RegisterAudience(client: CreateAudienceInput!): Audience!
-		UpdateAudience(client: UpdateAudienceInput!): Audience!
-		CreatePlatform(platform: [CreatePlatformInput!]): [Platform!]!
+		RegisterAudience(viewers: CreateAudienceInput!): Audience!
+		UpdateAudience(viewer: UpdateAudienceInput!): Audience!
+		CreatePlatform(platforms: [CreatePlatformInput!]): [Platform!]!
 		UpdatePlatform(platform: UpdatePlatformInput!): Platform!
-		RemoveEntries(palette: String!, person: String!, platform: String!): Boolean!
+		RemoveEntries(palette: String, customer: String, audience: String, platform: String): Report!
 	}
 
 	input CreateAudienceInput {
@@ -70,7 +74,7 @@ export default `
 		email: String!
 		sex: Sex!
 		phone: Float!
-		interests: [String!]!
+		interests: [String!]
 	}
 
 	input CreateCustomerInput {
@@ -96,6 +100,7 @@ export default `
 	}
 
 	input UpdateAudienceInput {
+		keyID: String!
 		_name: String
 		email: String
 		sex: Sex
@@ -113,6 +118,7 @@ export default `
 	}
 
 	input UpdatePaletteInput {
+		keyID: String!
 		title: String
 		category: String
 		author: String
@@ -121,6 +127,7 @@ export default `
 	}
 	
 	input UpdatePlatformInput {
+		keyID: String!
 		title: String
 		category: String
 		src_file: String

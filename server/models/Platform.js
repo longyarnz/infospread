@@ -14,22 +14,22 @@ const Platform = Mongoose.model('Platform', platformSchema);
 
 Platform.get = function(options = {}, limit = 1000, sort = '', callback, populate = '', project = ''){
   connect();
-  return Platform.find(options, project, { limit, sort, populate }, callback);
+  return this.find(options, project, { limit, sort, populate }, callback);
 }
 
 Platform.set = function(items, callback){
   connect();
-  return Platform.create(items, callback);
+  return this.create(items, callback);
 }
 
 Platform.reset = function(options, items, callback){
   connect();
-  return Platform.update(options, items, callback);
+  return this.update(options, items, callback);
 }
 
 Platform.erase = function(doc, callback){
   connect();
-  return Platform.remove(doc, callback);
+  return this.remove(doc, callback);
 }
 
 Platform.query = `
@@ -45,6 +45,6 @@ Platform.query = `
   }
 `;
 
-Platform.disconnect = () => Mongoose.disconnect(() => console.info('Database Disconnected...'));
+Platform.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 
 export default Platform;

@@ -8,15 +8,15 @@ const customerSchema = new Schema({
   email: { type: String, required: true },
   sex: { type: String, required: true },
   phone: { type: Number, required: true },
-  palettes: { type: [String], default: [] },
+  palettes: [{ type: String, default: '', ref: 'Palette' }],
   createdAt: { type: Date, default: Date.now }
 });
 
 const Customer = Mongoose.model('Customer', customerSchema);
 
-Customer.get = function (options = {}, limit = 100, sort = '', callback, project = '') {
+Customer.get = function (options = {}, limit = 100, sort = '', callback, populate = '', project = '') {
   connect();
-  return this.find(options, project, { limit, sort }, callback);
+  return this.find(options, project, { limit, sort, populate }, callback);
 }
 
 Customer.set = function (customer, callback) {

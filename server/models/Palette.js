@@ -9,7 +9,7 @@ const paletteSchema = new Schema({
   category: { type: String, required: true },
   tags: { type: [String], required: true },
   src_file: { type: String, required: true },
-  author: { type: String, required: true },
+  author: { type: String, required: true, ref: 'Customer' },
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -17,22 +17,22 @@ const Palette = Mongoose.model('Palette', paletteSchema);
 
 Palette.get = function(options = {}, limit = 1000, sort = '', callback, populate = '', project = ''){
   connect();
-  return Palette.find(options, project, { limit, sort, populate }, callback);
+  return this.find(options, project, { limit, sort, populate }, callback);
 }
 
 Palette.set = function(palettes, callback){
   connect();
-  return Palette.create(palettes, callback);
+  return this.create(palettes, callback);
 }
 
 Palette.reset = function(options, items, callback){
   connect();
-  return Palette.update(options, items, callback);
+  return this.update(options, items, callback);
 }
 
 Palette.erase = function(doc, callback){
   connect();
-  return Palette.remove(doc, callback);
+  return this.remove(doc, callback);
 }
 
 Palette.query = `query GetPalettes {
@@ -47,6 +47,6 @@ Palette.query = `query GetPalettes {
   }
 }`;
 
-Palette.disconnect = () => Mongoose.disconnect(() => console.info('Database Disconnected...'));
+Palette.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 
 export default Palette;
