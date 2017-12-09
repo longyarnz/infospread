@@ -1,8 +1,9 @@
 import cors from 'cors';
 import path from 'path';
+import Data from './data';
 import multer from 'multer';
 import express from 'express';
-import models from './server/models';
+import * as rootValue from './server/models';
 import typeDefs from './server/schema';
 import resolvers from './server/resolvers';
 import graphHTTP from "express-graphql";
@@ -20,12 +21,11 @@ const storage = multer.diskStorage({
 });
 App.use(express.static('build'));
 App.use(express.static('images'));
+App.get('/populate', (req, res) => res.json(Data()));
 App.get('/', cors(), (req, res) => res.sendFile(path.join(__dirname, 'build/index.html')));
 App.post('/upload', multer({ storage }).any(), (req, res) => res('OK'));
-App.post('/graphql', graphHTTP({
-  schema, pretty: true, rootValue: models
-}));
 App.listen(PORT, HOST, () => {
+  App.post('/graphql', graphHTTP({ schema, pretty: true, rootValue }));
   clearConsole();
   console.log(`Server Listening at http://${HOST}:${PORT}`);
 });

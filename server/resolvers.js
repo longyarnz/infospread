@@ -7,6 +7,7 @@ function performUpdate(model, args){
   });
 }
 
+
 export default {
   Query: {
     palettes: ({ Palette }, { options, limit, sort }) => Palette.get(options, limit, sort, Palette.disconnect, 'author'),

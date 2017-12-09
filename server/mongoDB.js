@@ -2,7 +2,7 @@ import Mongoose from 'mongoose';
 import assert from 'assert';
 import promise from 'bluebird';
 export default () => {
-  // const uriDB = `mongodb://ayolek:Longyarn1@welfurnish0-shard-00-00-kk7e0.mongodb.net:27017,welfurnish0-shard-00-01-kk7e0.mongodb.net:27017,welfurnish0-shard-00-02-kk7e0.mongodb.net:27017/welfurnish?ssl=true&replicaSet=Welfurnish0-shard-0&authSource=admin`;
+  // const uriDB = `mongodb://PowerUser:addingValue@infospread-shard-00-00-inwmw.mongodb.net:27017,infospread-shard-00-01-inwmw.mongodb.net:27017,infospread-shard-00-02-inwmw.mongodb.net:27017/test?ssl=true&replicaSet=Infospread-shard-0&authSource=admin`;
   const uriDB = 'mongodb://info:voissapp@127.0.0.1/info_spread';
   Mongoose.connect(uriDB, { useMongoClient: true }, function(err){
     assert.equal(err, null);
