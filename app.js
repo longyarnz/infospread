@@ -3,6 +3,8 @@ import path from 'path';
 import Data from './data';
 import multer from 'multer';
 import express from 'express';
+import bodyParser from 'body-parser';
+import parseQuery from './parseQuery'
 import * as rootValue from './server/models';
 import typeDefs from './server/schema';
 import resolvers from './server/resolvers';
@@ -24,8 +26,17 @@ App.use(express.static('images'));
 App.get('/populate', (req, res) => res.json(Data()));
 App.get('/', cors(), (req, res) => res.sendFile(path.join(__dirname, 'build/index.html')));
 App.post('/upload', multer({ storage }).any(), (req, res) => res('OK'));
+App.post('/graphql', bodyParser(), parseQuery, graphHTTP(req => {
+  try{
+    const num = req.body.query.search(/introspection/i);
+    if(num > -1) return {};
+    return { schema, rootValue }
+  }
+  catch(err){
+    return {};
+  }
+}));
 App.listen(PORT, HOST, () => {
-  App.post('/graphql', graphHTTP({ schema, pretty: true, rootValue }));
   clearConsole();
   console.log(`Server Listening at http://${HOST}:${PORT}`);
 });

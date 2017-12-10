@@ -24,11 +24,11 @@ export default {
     UpdatePlatform: ({ Platform }, { platform }) => performUpdate(Platform, platform),
     UpdateCustomer: ({ Customer }, { user }) => performUpdate(Customer, user),
     UpdateAudience: ({ Audience }, { viewer }) => performUpdate(Audience, viewer),
-    RemoveEntries: async ({ Palette, Customer, Audience, Platform }, order) => {
-      let model, options;
-      for (const fields in order){
-        options = { _id: order[fields] };
-        console.log(options);
+    RemoveEntries: async ({ Palette, Customer, Audience, Platform }, { options }) => {
+      let model, order, result = {};
+      for (const fields in options){
+        console.log(fields);
+        options = {_id: {$in: options[fields]}};
         switch (fields) {
         case 'palette':
           model = Palette;  
@@ -43,13 +43,10 @@ export default {
           model = Platform;
           break;
         }
-        options = await model.erase(options, model.disconnect);
-        options = options.result;
+        order = await model.erase(options, model.disconnect);
+        result[fields] = order.result.ok > 0;
       }    
-      return options;
+      return result;
     }
-  },
-  Report: {
-    status: ({ ok }) => ok > 0,
   }
 }

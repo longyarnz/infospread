@@ -54,7 +54,10 @@ export default `
 	}
 
 	type Report {
-		status: Boolean,
+		palette: Boolean
+		platform: Boolean
+		audience: Boolean
+		customer: Boolean
 	}
 
 	type Mutation {
@@ -66,7 +69,7 @@ export default `
 		UpdateAudience(viewer: UpdateAudienceInput!): Audience!
 		CreatePlatform(platforms: [CreatePlatformInput!]): [Platform!]!
 		UpdatePlatform(platform: UpdatePlatformInput!): Platform!
-		RemoveEntries(palette: String, customer: String, audience: String, platform: String): Report!
+		RemoveEntries(options: DeleteInput!): Report!
 	}
 
 	input CreateAudienceInput {
@@ -131,5 +134,12 @@ export default `
 		title: String
 		category: String
 		src_file: String
+	}
+
+	input DeleteInput {
+		palette: [String]
+		platform: [String]
+		audience: [String]
+		customer: [String]
 	}
 `;
