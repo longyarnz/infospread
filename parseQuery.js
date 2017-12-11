@@ -1,8 +1,3 @@
-function tag(string){
-  console.log(string.raw[0]);
-  return string.raw[0];
-}
-
 const presets = {
   getPalettes: `
     query GetPalettes($limit: Int, $sort: String, $options: UpdatePaletteInput){
@@ -134,6 +129,16 @@ const presets = {
 }
 
 export default (req, res, next) => {
-  req.body.query = presets[req.body.query];
-  next();
+  try {
+    const num = req.body.query.search(/introspection/i);
+    if (num > -1) res.end();
+  }
+  catch (err) {
+    res.end();
+  }
+  if (presets.hasOwnProperty(req.body.query)){
+    req.body.query = presets[req.body.query];
+    next();
+  }
+  else res.end();
 }
