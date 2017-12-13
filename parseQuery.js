@@ -1,4 +1,59 @@
 const presets = {
+  onePalette: `
+    query OnePalette($options: String!){
+      onePalette(options: $options){
+        keyID
+        title
+        category
+        src_file
+        tags
+        author{
+          keyID
+          _name
+          email
+          phone
+        }
+      }
+    }
+  `,
+  oneViewer: `
+    query OneViewer($options: String!){
+      oneViewer(options: $options){
+        keyID
+        _name
+        email
+        phone
+        interests
+      }
+    }
+  `,
+  oneCustumer: `
+    query OnePalette($options: String!){
+      oneCustomer(options: $options){
+        keyID
+        _name
+        email
+        phone
+        palettes{
+          keyID
+          title
+          category
+          src_file
+          tags
+        }
+      }
+    }
+  `,
+  onePlatform: `
+    query OnePlatform($options: String!){
+      onePlatform(options: $options){
+        keyID
+        title
+        category
+        src_file
+      }
+    }
+  `,
   getPalettes: `
     query GetPalettes($limit: Int, $sort: String, $options: UpdatePaletteInput){
       palettes(limit: $limit, sort: $sort, options: $options) {
@@ -10,6 +65,8 @@ const presets = {
         author{
           keyID
           _name
+          email
+          phone
         }
       }
     }
@@ -45,6 +102,9 @@ const presets = {
         palettes{
           keyID
           title
+          category
+          src_file
+          tags
         }
       }
     }

@@ -1,6 +1,7 @@
 import UUID from 'uuid';
 import Mongoose, { Schema } from 'mongoose';
 import connect from '../mongoDB';
+import Dataloader from 'dataloader';
 
 const customerSchema = new Schema({
   _id: { type: String, default: UUID.v4, alias: 'keyID' },
@@ -14,24 +15,35 @@ const customerSchema = new Schema({
 
 const Customer = Mongoose.model('Customer', customerSchema);
 
-Customer.get = function (options = {}, limit = 100, sort = '', callback, populate = '', project = '') {
-  connect();
-  return this.find(options, project, { limit, sort, populate }, callback);
+function loader({ limit, sort, populate = 'palettes' }) {
+  const find = obj => Customer.find(JSON.parse(obj)).limit(limit)
+    .sort(sort).populate(populate).exec(Customer.disconnect).then(res => {
+      return res.length > 1 ? [res] : res
+    });
+  return new Dataloader(find);
 }
 
-Customer.set = function (customer, callback) {
-  connect();
-  return this.create(customer, callback);
+Customer.get = function (options = {}, limit = 100, sort = '-keyID') {
+  connect(); limit = loader({ limit, sort });
+  return limit.load(JSON.stringify(options));
 }
 
-Customer.erase = function (doc, callback) {
+Customer.set = function (customer) {
   connect();
-  return this.remove(doc, callback);
+  loader({}).clear(JSON.stringify({}));
+  return this.create(customer, this.disconnect);
 }
 
-Customer.reset = function (options, customer, callback) {
+Customer.erase = function (doc) {
   connect();
-  return this.update(options, customer, callback);
+  loader({}).clear(JSON.stringify({}));
+  return this.remove(doc, this.disconnect);
+}
+
+Customer.reset = function (options, customer) {
+  connect();
+  loader({}).clear(JSON.stringify({}));
+  return this.update(options, customer, this.disconnect);
 }
 
 Customer.query = `

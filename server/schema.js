@@ -5,6 +5,10 @@ export default `
 	}
 
 	type Query {
+		onePalette(options: String!): Palette
+		oneCustomer(options: String!): Customer
+		oneViewer(options: String!): Audience
+		onePlatform(options: String!): Platform
 		palettes(options: UpdatePaletteInput, limit: Int, sort: String): [Palette]
 		customers(options: UpdateCustomerInput, limit: Int, sort: String): [Customer]
 		audience(options: UpdateAudienceInput, limit: Int, sort: String): [Audience]
@@ -103,7 +107,8 @@ export default `
 	}
 
 	input UpdateAudienceInput {
-		keyID: String!
+		keyID: String
+		_id: String
 		_name: String
 		email: String
 		sex: Sex
@@ -112,7 +117,8 @@ export default `
 	}
 
 	input UpdateCustomerInput {
-		keyID: String!
+		keyID: String
+		_id: String
 		_name: String
 		email: String
 		sex: Sex
@@ -121,7 +127,8 @@ export default `
 	}
 
 	input UpdatePaletteInput {
-		keyID: String!
+		keyID: String
+		_id: String
 		title: String
 		category: String
 		author: String
@@ -130,7 +137,8 @@ export default `
 	}
 	
 	input UpdatePlatformInput {
-		keyID: String!
+		keyID: String
+		_id: String
 		title: String
 		category: String
 		src_file: String

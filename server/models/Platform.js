@@ -1,6 +1,7 @@
 import UUID from 'uuid';
 import Mongoose, { Schema } from 'mongoose';
 import connect from '../mongoDB';
+import Dataloader from 'dataloader';
 
 const platformSchema = new Schema({
   _id: { type: String, default: UUID.v4, alias: 'keyID' },
@@ -12,24 +13,35 @@ const platformSchema = new Schema({
 
 const Platform = Mongoose.model('Platform', platformSchema);
 
-Platform.get = function(options = {}, limit = 1000, sort = '', callback, populate = '', project = ''){
-  connect();
-  return this.find(options, project, { limit, sort, populate }, callback);
+function loader({ limit = 1000, sort = '-keyID' }) {
+  const find = obj => Platform.find(JSON.parse(obj)).limit(limit)
+    .sort(sort).exec(Platform.disconnect).then(res => {
+      return res.length > 1 ? [res] : res
+    });
+  return new Dataloader(find);
 }
 
-Platform.set = function(items, callback){
-  connect();
-  return this.create(items, callback);
+Platform.get = function(options = {}, limit = 1000, sort = '-keyID'){
+  connect(); limit = loader({ limit, sort });
+  return limit.load(JSON.stringify(options));
 }
 
-Platform.reset = function(options, items, callback){
+Platform.set = function(items){
   connect();
-  return this.update(options, items, callback);
+  loader({}).clear(JSON.stringify({}));
+  return this.create(items, this.disconnect);
 }
 
-Platform.erase = function(doc, callback){
+Platform.reset = function(options, items){
   connect();
-  return this.remove(doc, callback);
+  loader({}).clear(JSON.stringify({}));
+  return this.update(options, items, this.disconnect);
+}
+
+Platform.erase = function(doc){
+  connect();
+  loader({}).clear(JSON.stringify({}));
+  return this.remove(doc, this.disconnect);
 }
 
 Platform.query = `

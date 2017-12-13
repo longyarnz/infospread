@@ -1,6 +1,7 @@
 import UUID from 'uuid';
 import Mongoose, { Schema } from 'mongoose';
 import connect from '../mongoDB';
+import Dataloader from 'dataloader';
 
 const audienceSchema = new Schema({
   _id: { type: String, default: UUID.v4, alias: 'keyID' },
@@ -14,24 +15,36 @@ const audienceSchema = new Schema({
 
 const Audience = Mongoose.model('Audience', audienceSchema, 'audience');
 
-Audience.get = function(options = {}, limit = 100, sort = '', callback, populate = '', project = ''){
-  connect();
-  return Audience.find(options, project, { limit, sort, populate }, callback);
+function loader({ limit = 1000, sort = '-keyID' }) {
+  const find = obj => Audience.find(JSON.parse(obj)).limit(limit)
+    .sort(sort).exec(Audience.disconnect).then(res => {
+      return res.length > 1 ? [res] : res
+    });
+  return new Dataloader(find);
 }
 
-Audience.set = function(audience, callback){
-  connect();
-  return Audience.create(audience, callback);
+Audience.get = function(options = {}, limit = 1000, sort = '-keyID'){
+  console.log(options);
+  connect(); limit = loader({ limit, sort });
+  return limit.load(JSON.stringify(options));
 }
 
-Audience.erase = function(doc, callback){
+Audience.set = function(audience){
   connect();
-  return Audience.remove(doc, callback);
+  loader({}).clear(JSON.stringify({}));
+  return Audience.create(audience, this.disconnect);
 }
 
-Audience.reset = function (options, audience, callback) {
+Audience.erase = function(doc){
   connect();
-  return Audience.update(options, audience, callback);
+  loader({}).clear(JSON.stringify({}));
+  return Audience.remove(doc, this.disconnect);
+}
+
+Audience.reset = function (options, audience) {
+  connect();
+  loader({}).clear(JSON.stringify({}));
+  return Audience.update(options, audience, this.disconnect);
 }
 
 Audience.query = `

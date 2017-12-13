@@ -10,16 +10,20 @@ function performUpdate(model, args){
 
 export default {
   Query: {
-    palettes: ({ Palette }, { options, limit, sort }) => Palette.get(options, limit, sort, Palette.disconnect, 'author'),
-    customers: ({ Customer }, { options, limit, sort }) => Customer.get(options, limit, sort, Customer.disconnect, 'palettes'),
-    audience: ({ Audience }, { options, limit, sort }) => Audience.get(options, limit, sort, Audience.disconnect),
-    platforms: ({ Platform }, { options, limit, sort }) => Platform.get(options, limit, sort, Platform.disconnect)
+    onePalette: ({ Palette }, { options }) => Palette.get({_id: options}),
+    oneCustomer: ({ Customer }, { options }) => Customer.get({_id: options}),
+    onePlatform: ({ Platform }, { options }) => Platform.get({_id: options}),
+    oneViewer: ({ Audience }, { options }) => Audience.get({_id: options}),
+    palettes: ({ Palette }, { options, limit, sort }) => Palette.get(options, limit, sort),
+    customers: ({ Customer }, { options, limit, sort }) => Customer.get(options, limit, sort),
+    audience: ({ Audience }, { options, limit, sort }) => Audience.get(options, limit, sort),
+    platforms: ({ Platform }, { options, limit, sort }) => Platform.get(options, limit, sort)
   },
   Mutation: {
-    CreatePalette: ({ Palette }, { palettes }) => Palette.set(palettes, Palette.disconnect),
-    CreatePlatform: ({ Platform }, { platforms }) => Platform.set(platforms, Platform.disconnect),
-    RegisterCustomer: ({ Customer }, { users }) => Customer.set(users, Customer.disconnect),
-    RegisterAudience: ({ Audience }, { viewers }) => Audience.set(viewers, Audience.disconnect),
+    CreatePalette: ({ Palette }, { palettes }) => Palette.set(palettes),
+    CreatePlatform: ({ Platform }, { platforms }) => Platform.set(platforms),
+    RegisterCustomer: ({ Customer }, { users }) => Customer.set(users),
+    RegisterAudience: ({ Audience }, { viewers }) => Audience.set(viewers),
     UpdatePalette: ({ Palette }, { palette }) => performUpdate(Palette, palette),
     UpdatePlatform: ({ Platform }, { platform }) => performUpdate(Platform, platform),
     UpdateCustomer: ({ Customer }, { user }) => performUpdate(Customer, user),
