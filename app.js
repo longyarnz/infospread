@@ -1,7 +1,6 @@
 import cors from 'cors';
 import path from 'path';
 import Data from './data';
-import assert from 'assert';
 import multer from 'multer';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -12,7 +11,7 @@ import resolvers from './server/resolvers';
 import graphHTTP from "express-graphql";
 import { makeExecutableSchema } from 'graphql-tools';
 import clearConsole from 'react-dev-utils/clearConsole';
-const PORT = process.env.PORT || 4002, HOST = '0.0.0.0' || '127.0.0.1';
+const PORT = process.env.PORT || 4002, HOST = '127.0.0.1' || '0.0.0.0';
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const App = express();
 const storage = multer.diskStorage({
@@ -27,28 +26,27 @@ App.use(express.static('images'));
 App.get('/populate', (req, res) => res.json(Data()));
 App.get('/', cors(), (req, res) => res.sendFile(path.join(__dirname, 'build/index.html')));
 App.get('/api/palettes', (req, res) => {
-  rootValue.Palette.get({}, null, null, (err, palettes) => {
-    assert.equal(err, null);
-    res.send(palettes);
+  rootValue.Palette.get({}).then(palettes => {
+    rootValue.Palette.disconnect();  
+    res.json(palettes);
   })
 });
 App.get('/api/customers', (req, res) => {
-  rootValue.Customer.get({}, null, null, (err, customers) => {
-    assert.equal(err, null);
+  rootValue.Customer.get({}).then(customers => {
     rootValue.Customer.disconnect();
     res.json(customers);
   })
 });
 App.get('/api/audience', (req, res) => {
   rootValue.Audience.get({}).then(audience => {
-    res.send(audience);
+    rootValue.Audience.disconnect();
+    res.json(audience);
   })
 });
 App.get('/api/platforms', (req, res) => {
-  rootValue.Platform.get({}, null, null, (err, platforms) => {
-    assert.equal(err, null);
+  rootValue.Platform.get({}).then(platforms => {
     rootValue.Platform.disconnect();
-    res.send(platforms);
+    res.json(platforms);
   })
 });
 App.post('/upload', multer({ storage }).any(), (req, res) => res('OK'));
