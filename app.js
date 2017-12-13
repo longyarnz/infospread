@@ -40,8 +40,7 @@ App.get('/api/customers', (req, res) => {
   })
 });
 App.get('/api/audience', (req, res) => {
-  rootValue.Audience.get({}, null, null, (err, audience) => {
-    assert.equal(err, null);
+  rootValue.Audience.get({}).then(audience => {
     res.send(audience);
   })
 });
