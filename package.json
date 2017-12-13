@@ -1,5 +1,5 @@
 {
-  "name": "InfoSpread_Heroku",
+  "name": "infospread",
   "version": "1.0.0",
   "description": "Data API for InfoSpread",
   "main": "app.js",
