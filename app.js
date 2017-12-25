@@ -1,5 +1,3 @@
-// import cors from 'cors';
-// import path from 'path';
 import Data from './data';
 import multer from 'multer';
 import express from 'express';
@@ -24,7 +22,6 @@ const storage = multer.diskStorage({
 App.use(express.static('build'));
 App.use(express.static('images'));
 App.get('/populate', (req, res) => res.json(Data()));
-// App.get('/', cors(), (req, res) => res.sendFile(path.join(__dirname, 'build/index.html')));
 App.get('/api/palettes', (req, res) => {
   rootValue.Palette.get({}).then(palettes => {
     rootValue.Palette.disconnect();  
