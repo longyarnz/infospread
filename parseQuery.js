@@ -148,7 +148,7 @@ const presets = {
     mutation UpdateCustomer($options: UpdateCustomerInput!){
       UpdateCustomer(customer: $options){
         keyID
-        title
+        _name
       }
     }
   `,
