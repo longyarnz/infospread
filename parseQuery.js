@@ -170,7 +170,7 @@ const presets = {
   `,
   updateAudience: `
     mutation UpdateAudience($options: UpdateAudienceInput!){
-      UpdateAudience(audience: $options){
+      UpdateAudience(viewer: $options){
         keyID
         _name
       }

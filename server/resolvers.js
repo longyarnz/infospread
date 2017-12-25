@@ -1,8 +1,8 @@
 function performUpdate(model, args){
-  const { keyID } = args;
-  return model.reset({ _id: keyID }, args).then(async i => {
+  const { _id } = args;
+  return model.reset({ _id }, args).then(async i => {
     if (i.nModified === 0) return null;
-    args = await model.find({ _id: keyID }, model.disconnect);
+    args = await model.find({ _id }, model.disconnect);
     return args[0];
   });
 }

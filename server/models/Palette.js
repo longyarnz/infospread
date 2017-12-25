@@ -4,7 +4,7 @@ import connect from '../mongoDB';
 import Dataloader from 'dataloader';
 
 const paletteSchema = new Schema({
-  _id: { type: String, default: UUID.v4, alias: 'keyID' },
+  _id: { type: String, default: UUID.v4 },
   title: { type: String, required: true },
   caption: { type: String, required: true },
   category: { type: String, required: true },
@@ -16,7 +16,7 @@ const paletteSchema = new Schema({
 
 const Palette = Mongoose.model('Palette', paletteSchema);
 
-function loader({limit = 1000, sort = '-keyID', populate = 'author'}) {
+function loader({limit = 1000, sort = '-_id', populate = 'author'}) {
   const find = obj => Palette.find(JSON.parse(obj)).limit(limit)
     .sort(sort).populate(populate).exec(Palette.disconnect).then(res => {
       return res.length > 1 ? [res] : res
@@ -38,7 +38,12 @@ Palette.set = function(palettes){
 Palette.reset = function(options, items){
   connect();
   loader({}).clear(JSON.stringify({}));
-  return this.update(options, items, this.disconnect);
+  return new Promise(resolve => {
+    this.update(options, items, (err, docs) => {
+      if (err) throw err;
+      resolve(docs);
+    });
+  })
 }
 
 Palette.erase = function(doc){
@@ -46,18 +51,6 @@ Palette.erase = function(doc){
   loader({}).clear(JSON.stringify({}));
   return this.remove(doc, this.disconnect);
 }
-
-Palette.query = `query GetPalettes {
-  items {
-    keyID
-    title
-    category
-    tags
-    author
-    description
-    src_file
-  }
-}`;
 
 Palette.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 

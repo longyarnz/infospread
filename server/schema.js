@@ -21,7 +21,7 @@ export default `
 	}
 
 	type Palette {
-		keyID: String
+		_id: String
 		caption: String
 		title: String
 		category: String
@@ -32,7 +32,7 @@ export default `
 	}
 
 	type Customer {
-		keyID: String
+		_id: String
 		_name: String
 		email: String
 		sex: Sex
@@ -41,7 +41,7 @@ export default `
 	}
 
 	type Audience {
-		keyID: String
+		_id: String
 		_name: String
 		email: String
 		sex: Sex
@@ -50,7 +50,7 @@ export default `
 	}
 
 	type Platform {
-		keyID: String
+		_id: String
 		title: String
 		category: String
 		src_file: String
@@ -107,7 +107,7 @@ export default `
 	}
 
 	input UpdateAudienceInput {
-		keyID: String
+		_id: String
 		_id: String
 		_name: String
 		email: String
@@ -117,7 +117,6 @@ export default `
 	}
 
 	input UpdateCustomerInput {
-		keyID: String
 		_id: String
 		_name: String
 		email: String
@@ -127,7 +126,6 @@ export default `
 	}
 
 	input UpdatePaletteInput {
-		keyID: String
 		_id: String
 		title: String
 		category: String
@@ -137,7 +135,6 @@ export default `
 	}
 	
 	input UpdatePlatformInput {
-		keyID: String
 		_id: String
 		title: String
 		category: String
