@@ -47,18 +47,6 @@ Palette.erase = function(doc){
   return this.remove(doc, this.disconnect);
 }
 
-Palette.query = `query GetPalettes {
-  items {
-    keyID
-    title
-    category
-    tags
-    author
-    description
-    src_file
-  }
-}`;
-
 Palette.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 
 export default Palette;

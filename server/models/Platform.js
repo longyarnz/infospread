@@ -44,19 +44,6 @@ Platform.erase = function(doc){
   return this.remove(doc, this.disconnect);
 }
 
-Platform.query = `
-  query GetPlatforms {
-    platforms {
-      keyID
-      title
-      category
-      tags
-      author
-      src_file
-    }
-  }
-`;
-
 Platform.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 
 export default Platform;

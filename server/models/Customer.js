@@ -46,18 +46,6 @@ Customer.reset = function (options, customer) {
   return this.update(options, customer, this.disconnect);
 }
 
-Customer.query = `
-  query GetCustomers{
-    customers{
-      keyID
-      _name
-      email
-      phone
-      palettes
-    }
-  }
-`;
-
 Customer.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 
 export default Customer;

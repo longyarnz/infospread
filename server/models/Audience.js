@@ -47,18 +47,6 @@ Audience.reset = function (options, audience) {
   return Audience.update(options, audience, this.disconnect);
 }
 
-Audience.query = `
-  query GetAudience{
-    audience{
-      keyID
-      _name
-      email
-      phone
-      interests
-    }
-  }
-`;
-
 Audience.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 
 export default Audience;
