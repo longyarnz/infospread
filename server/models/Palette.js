@@ -32,8 +32,8 @@ Palette.get = function(options = {}, limit, sort){
 Palette.set = function(palettes){
   connect();
   loader({}).clear(JSON.stringify({}));
-  return this.create(palettes, this.disconnect);
-}
+  return this.create(palettes, this.disconnect).then(([{_id}]) => [this.get({ _id })]);
+}   
 
 Palette.reset = function(options, items){
   connect();
