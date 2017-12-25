@@ -113,7 +113,10 @@ const presets = {
     mutation AddPalettes($options: [CreatePaletteInput!]){
       CreatePalette(palettes: $options){
         keyID
-        author
+        author{
+          keyID
+          _name
+        }
       }
     }
   `,
