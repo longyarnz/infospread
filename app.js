@@ -1,3 +1,4 @@
+import path from 'path';
 import Data from './data';
 import multer from 'multer';
 import express from 'express';
@@ -9,11 +10,11 @@ import resolvers from './server/resolvers';
 import graphHTTP from "express-graphql";
 import { makeExecutableSchema } from 'graphql-tools';
 import clearConsole from 'react-dev-utils/clearConsole';
-const PORT = 4002, HOST = '127.0.0.1';
+const PORT = process.env.PORT, HOST = '0.0.0.0';
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const App = express();
 const storage = multer.diskStorage({
-  destination: 'images/',
+  destination: path.join(__dirname, 'images/'),
   filename: (req, file, cb) => {
     const prefix = Date.now().toString().slice(0, 8);
     return cb(null, `${prefix}_${file.originalName}`);
