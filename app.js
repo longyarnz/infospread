@@ -11,7 +11,7 @@ import resolvers from './server/resolvers';
 import graphHTTP from "express-graphql";
 import { makeExecutableSchema } from 'graphql-tools';
 import clearConsole from 'react-dev-utils/clearConsole';
-const PORT = process.env.PORT || 4002, HOST = '127.0.0.1';
+const PORT = process.env.PORT || 4002, HOST = '0.0.0.0' || '127.0.0.1';
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const App = express();
 const storage = multer.diskStorage({
@@ -50,7 +50,7 @@ App.get('/api/platforms', (req, res) => {
   })
 });
 App.post('/upload', multer({ storage }).any(), (req, res) => res('OK'));
-App.post('/graphql', bodyParser(), parseQuery, graphHTTP({ schema, rootValue, pretty: true }));
+App.post('/graphql', bodyParser().json({extended: true}), parseQuery, graphHTTP({ schema, rootValue, pretty: true }));
 App.listen(PORT, HOST, () => {
   clearConsole();
   console.log(`Server Listening at http://${HOST}:${PORT}`);
