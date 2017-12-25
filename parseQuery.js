@@ -2,13 +2,13 @@ const presets = {
   onePalette: `
     query OnePalette($options: String!){
       onePalette(options: $options){
-        keyID
+        _id
         title
         category
         src_file
         tags
         author{
-          keyID
+          _id
           _name
           email
           phone
@@ -17,11 +17,12 @@ const presets = {
     }
   `,
   oneViewer: `
-    query OneViewer($options: String!){
+    query oneViewer($options: String!){
       oneViewer(options: $options){
-        keyID
+        _id
         _name
         email
+        sex
         phone
         interests
       }
@@ -30,12 +31,12 @@ const presets = {
   oneCustomer: `
     query OnePalette($options: String!){
       oneCustomer(options: $options){
-        keyID
+        _id
         _name
         email
         phone
         palettes{
-          keyID
+          _id
           title
           category
           src_file
@@ -47,7 +48,7 @@ const presets = {
   onePlatform: `
     query OnePlatform($options: String!){
       onePlatform(options: $options){
-        keyID
+        _id
         title
         category
         src_file
@@ -57,13 +58,13 @@ const presets = {
   getPalettes: `
     query GetPalettes($limit: Int, $sort: String, $options: UpdatePaletteInput){
       palettes(limit: $limit, sort: $sort, options: $options) {
-        keyID
+        _id
         title
         category
         src_file
         tags
         author{
-          keyID
+          _id
           _name
           email
           phone
@@ -74,17 +75,17 @@ const presets = {
   getPlatforms: `
     query GetPlatforms($limit: Int, $sort: String, $options: UpdatePlatformInput) {
       platforms (limit: $limit, sort: $sort, options: $options){
-        keyID
+        _id
         title
         category
         src_file
       }
     }
   `,
-  getAudience: `
-    query GetAudience($limit: Int, $sort: String, $options: UpdateAudienceInput){
-      audience(limit: $limit, sort: $sort, options: $options) {
-        keyID
+  getViewers: `
+    query GetViewers($limit: Int, $sort: String, $options: UpdateViewerInput){
+      viewer(limit: $limit, sort: $sort, options: $options) {
+        _id
         _name
         email
         phone
@@ -95,12 +96,12 @@ const presets = {
   getCustomers: `
     query GetCustomers($limit: Int, $sort: String, $options: UpdateCustomerInput){
       customers(limit: $limit, sort: $sort, options: $options){
-        keyID
+        _id
         _name
         email
         phone
         palettes{
-          keyID
+          _id
           title
           category
           src_file
@@ -112,9 +113,9 @@ const presets = {
   addPalettes: `
     mutation AddPalettes($options: [CreatePaletteInput!]){
       CreatePalette(palettes: $options){
-        keyID
+        _id
         author{
-          keyID
+          _id
           _name
         }
       }
@@ -123,23 +124,23 @@ const presets = {
   addPlatform: `
     mutation AddPlatform($options: [CreatePlatformInput!]){
       CreatePlatform(platforms: $options){
-        keyID
+        _id
         title
       }
     }
   `,
   addCustomer: `
     mutation AddCustomer($options: CreateCustomerInput!){
-      RegisterCustomer(users: $options){
-        keyID
+      CreateCustomer(users: $options){
+        _id
         _name
       }
     }
   `,
-  addAudience: `
-    mutation AddAudience($options: CreateAudienceInput!){
-      RegisterAudience(viewers: $options){
-        keyID
+  addViewer: `
+    mutation AddViewer($options: CreateViewerInput!){
+      CreateViewer(viewers: $options){
+        _id
         _name
       }
     }
@@ -147,7 +148,11 @@ const presets = {
   updateCustomer: `
     mutation UpdateCustomer($options: UpdateCustomerInput!){
       UpdateCustomer(user: $options){
+<<<<<<< HEAD
         keyID
+=======
+        _id
+>>>>>>> development
         _name
       }
     }
@@ -155,7 +160,7 @@ const presets = {
   updatePalette: `
     mutation UpdatePalette($options: UpdatePaletteInput!){
       UpdatePalette(palette: $options){
-        keyID
+        _id
         title
       }
     }
@@ -163,15 +168,15 @@ const presets = {
   updatePlatform: `
     mutation UpdatePlatform($options: UpdatePlatformInput!){
       UpdatePlatform(platform: $options){
-        keyID
+        _id
         title
       }
     }
   `,
-  updateAudience: `
-    mutation UpdateAudience($options: UpdateAudienceInput!){
-      UpdateAudience(audience: $options){
-        keyID
+  updateViewer: `
+    mutation UpdateViewer($options: UpdateViewerInput!){
+      UpdateViewer(viewer: $options){
+        _id
         _name
       }
     }
@@ -181,7 +186,7 @@ const presets = {
       RemoveEntries(options: $options){
         palette
         platform
-        audience
+        viewer
         customer
       }
     }

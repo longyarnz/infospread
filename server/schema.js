@@ -7,11 +7,11 @@ export default `
 	type Query {
 		onePalette(options: String!): Palette
 		oneCustomer(options: String!): Customer
-		oneViewer(options: String!): Audience
+		oneViewer(options: String!): Viewer
 		onePlatform(options: String!): Platform
 		palettes(options: UpdatePaletteInput, limit: Int, sort: String): [Palette]
 		customers(options: UpdateCustomerInput, limit: Int, sort: String): [Customer]
-		audience(options: UpdateAudienceInput, limit: Int, sort: String): [Audience]
+		viewers(options: UpdateViewerInput, limit: Int, sort: String): [Viewer]
 		platforms(options: UpdatePlatformInput, limit: Int, sort: String): [Platform]
 	}
 
@@ -21,7 +21,7 @@ export default `
 	}
 
 	type Palette {
-		keyID: String
+		_id: String
 		caption: String
 		title: String
 		category: String
@@ -32,7 +32,7 @@ export default `
 	}
 
 	type Customer {
-		keyID: String
+		_id: String
 		_name: String
 		email: String
 		sex: Sex
@@ -40,8 +40,8 @@ export default `
 		palettes: [Palette]
 	}
 
-	type Audience {
-		keyID: String
+	type Viewer {
+		_id: String
 		_name: String
 		email: String
 		sex: Sex
@@ -50,7 +50,7 @@ export default `
 	}
 
 	type Platform {
-		keyID: String
+		_id: String
 		title: String
 		category: String
 		src_file: String
@@ -60,23 +60,23 @@ export default `
 	type Report {
 		palette: Boolean
 		platform: Boolean
-		audience: Boolean
+		viewer: Boolean
 		customer: Boolean
 	}
 
 	type Mutation {
-		RegisterCustomer(users: CreateCustomerInput!): Customer!
+		CreateCustomer(users: CreateCustomerInput!): Customer!
 		UpdateCustomer(user: UpdateCustomerInput!): Customer!
 		CreatePalette(palettes: [CreatePaletteInput!]): [Palette!]!
 		UpdatePalette(palette: UpdatePaletteInput!): Palette!
-		RegisterAudience(viewers: CreateAudienceInput!): Audience!
-		UpdateAudience(viewer: UpdateAudienceInput!): Audience!
+		CreateViewer(viewers: CreateViewerInput!): Viewer!
+		UpdateViewer(viewer: UpdateViewerInput!): Viewer!
 		CreatePlatform(platforms: [CreatePlatformInput!]): [Platform!]!
 		UpdatePlatform(platform: UpdatePlatformInput!): Platform!
 		RemoveEntries(options: DeleteInput!): Report!
 	}
 
-	input CreateAudienceInput {
+	input CreateViewerInput {
 		_name: String!
 		email: String!
 		sex: Sex!
@@ -106,8 +106,8 @@ export default `
 		src_file: String!
 	}
 
-	input UpdateAudienceInput {
-		keyID: String
+	input UpdateViewerInput {
+		_id: String
 		_id: String
 		_name: String
 		email: String
@@ -117,7 +117,6 @@ export default `
 	}
 
 	input UpdateCustomerInput {
-		keyID: String
 		_id: String
 		_name: String
 		email: String
@@ -127,7 +126,6 @@ export default `
 	}
 
 	input UpdatePaletteInput {
-		keyID: String
 		_id: String
 		title: String
 		category: String
@@ -137,7 +135,6 @@ export default `
 	}
 	
 	input UpdatePlatformInput {
-		keyID: String
 		_id: String
 		title: String
 		category: String
@@ -147,7 +144,7 @@ export default `
 	input DeleteInput {
 		palette: [String]
 		platform: [String]
-		audience: [String]
+		viewer: [String]
 		customer: [String]
 	}
 `;

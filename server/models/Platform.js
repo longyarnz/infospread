@@ -4,7 +4,7 @@ import connect from '../mongoDB';
 import Dataloader from 'dataloader';
 
 const platformSchema = new Schema({
-  _id: { type: String, default: UUID.v4, alias: 'keyID' },
+  _id: { type: String, default: UUID.v4 },
   title: { type: String, required: true },
   category: { type: String, required: true },
   src_file: { type: String, required: true },
@@ -13,7 +13,7 @@ const platformSchema = new Schema({
 
 const Platform = Mongoose.model('Platform', platformSchema);
 
-function loader({ limit = 1000, sort = '-keyID' }) {
+function loader({ limit = 1000, sort = '-_id' }) {
   const find = obj => Platform.find(JSON.parse(obj)).limit(limit)
     .sort(sort).exec(Platform.disconnect).then(res => {
       return res.length > 1 ? [res] : res
@@ -21,7 +21,7 @@ function loader({ limit = 1000, sort = '-keyID' }) {
   return new Dataloader(find);
 }
 
-Platform.get = function(options = {}, limit = 1000, sort = '-keyID'){
+Platform.get = function(options = {}, limit = 1000, sort = '-_id'){
   connect(); limit = loader({ limit, sort });
   return limit.load(JSON.stringify(options));
 }
@@ -32,10 +32,15 @@ Platform.set = function(items){
   return this.create(items, this.disconnect);
 }
 
-Platform.reset = function(options, items){
+Platform.reset = function(options, platform){
   connect();
   loader({}).clear(JSON.stringify({}));
-  return this.update(options, items, this.disconnect);
+  return new Promise(resolve => {
+    this.update(options, platform, (err, docs) => {
+      if (err) throw err;
+      resolve(docs);
+    });
+  })
 }
 
 Platform.erase = function(doc){

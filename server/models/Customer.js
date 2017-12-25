@@ -4,7 +4,7 @@ import connect from '../mongoDB';
 import Dataloader from 'dataloader';
 
 const customerSchema = new Schema({
-  _id: { type: String, default: UUID.v4, alias: 'keyID' },
+  _id: { type: String, default: UUID.v4 },
   _name: { type: String, required: true },
   email: { type: String, required: true },
   sex: { type: String, required: true },
@@ -23,7 +23,7 @@ function loader({ limit, sort, populate = 'palettes' }) {
   return new Dataloader(find);
 }
 
-Customer.get = function (options = {}, limit = 100, sort = '-keyID') {
+Customer.get = function (options = {}, limit = 100, sort = '-_id') {
   connect(); limit = loader({ limit, sort });
   return limit.load(JSON.stringify(options));
 }
@@ -43,7 +43,12 @@ Customer.erase = function (doc) {
 Customer.reset = function (options, customer) {
   connect();
   loader({}).clear(JSON.stringify({}));
-  return this.update(options, customer, this.disconnect);
+  return new Promise(resolve => {
+    this.update(options, customer, (err, docs) => {
+      if(err) throw err;
+      resolve(docs);
+    });
+  })
 }
 
 Customer.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
