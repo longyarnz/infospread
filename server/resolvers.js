@@ -13,25 +13,24 @@ export default {
     onePalette: ({ Palette }, { options }) => Palette.get({_id: options}),
     oneCustomer: ({ Customer }, { options }) => Customer.get({_id: options}),
     onePlatform: ({ Platform }, { options }) => Platform.get({_id: options}),
-    oneAudience: ({ Audience }, { options }) => Audience.get({_id: options}),
+    oneViewer: ({ Viewer }, { options }) => Viewer.get({_id: options}),
     palettes: ({ Palette }, { options, limit, sort }) => Palette.get(options, limit, sort),
     customers: ({ Customer }, { options, limit, sort }) => Customer.get(options, limit, sort),
-    audience: ({ Audience }, { options, limit, sort }) => Audience.get(options, limit, sort),
+    viewers: ({ Viewer }, { options, limit, sort }) => Viewer.get(options, limit, sort),
     platforms: ({ Platform }, { options, limit, sort }) => Platform.get(options, limit, sort)
   },
   Mutation: {
     CreatePalette: ({ Palette }, { palettes }) => Palette.set(palettes),
     CreatePlatform: ({ Platform }, { platforms }) => Platform.set(platforms),
     CreateCustomer: ({ Customer }, { users }) => Customer.set(users),
-    CreateAudience: ({ Audience }, { viewers }) => Audience.set(viewers),
+    CreateViewer: ({ Viewer }, { viewers }) => Viewer.set(viewers),
     UpdatePalette: ({ Palette }, { palette }) => performUpdate(Palette, palette),
     UpdatePlatform: ({ Platform }, { platform }) => performUpdate(Platform, platform),
     UpdateCustomer: ({ Customer }, { user }) => performUpdate(Customer, user),
-    UpdateAudience: ({ Audience }, { viewer }) => performUpdate(Audience, viewer),
-    RemoveEntries: async ({ Palette, Customer, Audience, Platform }, { options }) => {
+    UpdateViewer: ({ Viewer }, { viewer }) => performUpdate(Viewer, viewer),
+    RemoveEntries: async ({ Palette, Customer, Viewer, Platform }, { options }) => {
       let model, order, result = {};
       for (const fields in options){
-        console.log(fields);
         options = {_id: {$in: options[fields]}};
         switch (fields) {
         case 'palette':
@@ -40,8 +39,8 @@ export default {
         case 'customer':
           model = Customer;  
           break;
-        case 'audience':
-          model = Audience;  
+        case 'viewer':
+          model = Viewer;  
           break;        
         default:
           model = Platform;

@@ -1,6 +1,6 @@
 import Faker from 'faker';
 import _ from 'lodash';
-import { Customer, Palette, Audience, Platform } from './server/models';
+import { Customer, Palette, Viewer, Platform } from './server/models';
 export default () => {
   const data = _.times(10, (i) => {
     const { name, phone, internet, random, company, commerce, image } = Faker,
@@ -30,21 +30,21 @@ export default () => {
         category: commerce.department(),
         src_file: image.imageUrl()
       },
-      audience = {
+      viewer = {
         _name: `${x} ${y}`,
         sex: (i % 2 === 0 ? 'MALE' : 'FEMALE'),
         email: internet.email(x, y),
         phone: parseInt(phone.phoneNumber("2348#########"), 10),
         interests: [a, b, c]
       }
-    return { customer, palette, platform, audience }
+    return { customer, palette, platform, viewer }
   });
-  return data.map(({ customer, palette, platform, audience }) => {
+  return data.map(({ customer, palette, platform, viewer }) => {
     return [
       Customer.set(customer, Customer.disconnect),
       Palette.set(palette, Palette.disconnect),
       Platform.set(platform, Platform.disconnect),
-      Audience.set(audience, Audience.disconnect)
+      Viewer.set(viewer, Viewer.disconnect)
     ]
   });
 };

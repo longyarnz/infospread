@@ -7,11 +7,11 @@ export default `
 	type Query {
 		onePalette(options: String!): Palette
 		oneCustomer(options: String!): Customer
-		oneAudience(options: String!): Audience
+		oneViewer(options: String!): Viewer
 		onePlatform(options: String!): Platform
 		palettes(options: UpdatePaletteInput, limit: Int, sort: String): [Palette]
 		customers(options: UpdateCustomerInput, limit: Int, sort: String): [Customer]
-		audience(options: UpdateAudienceInput, limit: Int, sort: String): [Audience]
+		viewers(options: UpdateViewerInput, limit: Int, sort: String): [Viewer]
 		platforms(options: UpdatePlatformInput, limit: Int, sort: String): [Platform]
 	}
 
@@ -40,7 +40,7 @@ export default `
 		palettes: [Palette]
 	}
 
-	type Audience {
+	type Viewer {
 		_id: String
 		_name: String
 		email: String
@@ -60,7 +60,7 @@ export default `
 	type Report {
 		palette: Boolean
 		platform: Boolean
-		audience: Boolean
+		viewer: Boolean
 		customer: Boolean
 	}
 
@@ -69,14 +69,14 @@ export default `
 		UpdateCustomer(user: UpdateCustomerInput!): Customer!
 		CreatePalette(palettes: [CreatePaletteInput!]): [Palette!]!
 		UpdatePalette(palette: UpdatePaletteInput!): Palette!
-		CreateAudience(viewers: CreateAudienceInput!): Audience!
-		UpdateAudience(viewer: UpdateAudienceInput!): Audience!
+		CreateViewer(viewers: CreateViewerInput!): Viewer!
+		UpdateViewer(viewer: UpdateViewerInput!): Viewer!
 		CreatePlatform(platforms: [CreatePlatformInput!]): [Platform!]!
 		UpdatePlatform(platform: UpdatePlatformInput!): Platform!
 		RemoveEntries(options: DeleteInput!): Report!
 	}
 
-	input CreateAudienceInput {
+	input CreateViewerInput {
 		_name: String!
 		email: String!
 		sex: Sex!
@@ -106,7 +106,7 @@ export default `
 		src_file: String!
 	}
 
-	input UpdateAudienceInput {
+	input UpdateViewerInput {
 		_id: String
 		_id: String
 		_name: String
@@ -144,7 +144,7 @@ export default `
 	input DeleteInput {
 		palette: [String]
 		platform: [String]
-		audience: [String]
+		viewer: [String]
 		customer: [String]
 	}
 `;

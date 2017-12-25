@@ -34,10 +34,10 @@ App.get('/api/customers', (req, res) => {
     res.json(customers);
   })
 });
-App.get('/api/audience', (req, res) => {
-  rootValue.Audience.get({}).then(audience => {
-    rootValue.Audience.disconnect();
-    res.json(audience);
+App.get('/api/viewers', (req, res) => {
+  rootValue.Viewer.get({}).then(viewers => {
+    rootValue.Viewer.disconnect();
+    res.json(viewers);
   })
 });
 App.get('/api/platforms', (req, res) => {

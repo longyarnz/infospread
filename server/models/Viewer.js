@@ -3,7 +3,7 @@ import Mongoose, { Schema } from 'mongoose';
 import connect from '../mongoDB';
 import Dataloader from 'dataloader';
 
-const audienceSchema = new Schema({
+const viewerSchema = new Schema({
   _id: { type: String, default: UUID.v4 },
   _name: { type: String, required: true }, 
   email: { type: String, required: true },
@@ -13,44 +13,44 @@ const audienceSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const Audience = Mongoose.model('Audience', audienceSchema, 'audience');
+const Viewer = Mongoose.model('Viewer', viewerSchema);
 
 function loader({ limit = 1000, sort = '-_id' }) {
-  const find = obj => Audience.find(JSON.parse(obj)).limit(limit)
-    .sort(sort).exec(Audience.disconnect).then(res => {
+  const find = obj => Viewer.find(JSON.parse(obj)).limit(limit)
+    .sort(sort).exec(Viewer.disconnect).then(res => {
       return res.length > 1 ? [res] : res
     });
   return new Dataloader(find);
 }
 
-Audience.get = function(options = {}, limit = 1000, sort = '-_id'){
+Viewer.get = function(options = {}, limit = 1000, sort = '-_id'){
   connect(); limit = loader({ limit, sort });
   return limit.load(JSON.stringify(options));
 }
 
-Audience.set = function(audience){
+Viewer.set = function(viewer){
   connect();
   loader({}).clear(JSON.stringify({}));
-  return Audience.create(audience, this.disconnect);
+  return Viewer.create(viewer, this.disconnect);
 }
 
-Audience.erase = function(doc){
+Viewer.erase = function(doc){
   connect();
   loader({}).clear(JSON.stringify({}));
-  return Audience.remove(doc, this.disconnect);
+  return Viewer.remove(doc, this.disconnect);
 }
 
-Audience.reset = function (options, audience) {
+Viewer.reset = function (options, viewer) {
   connect();
   loader({}).clear(JSON.stringify({}));
   return new Promise(resolve => {
-    this.update(options, audience, (err, docs) => {
+    this.update(options, viewer, (err, docs) => {
       if (err) throw err;
       resolve(docs);
     });
   })
 }
 
-Audience.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
+Viewer.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
 
-export default Audience;
+export default Viewer;

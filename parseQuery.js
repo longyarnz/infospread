@@ -16,9 +16,9 @@ const presets = {
       }
     }
   `,
-  oneAudience: `
-    query oneAudience($options: String!){
-      oneAudience(options: $options){
+  oneViewer: `
+    query oneViewer($options: String!){
+      oneViewer(options: $options){
         _id
         _name
         email
@@ -82,9 +82,9 @@ const presets = {
       }
     }
   `,
-  getAudience: `
-    query GetAudience($limit: Int, $sort: String, $options: UpdateAudienceInput){
-      audience(limit: $limit, sort: $sort, options: $options) {
+  getViewers: `
+    query GetViewers($limit: Int, $sort: String, $options: UpdateViewerInput){
+      viewer(limit: $limit, sort: $sort, options: $options) {
         _id
         _name
         email
@@ -137,9 +137,9 @@ const presets = {
       }
     }
   `,
-  addAudience: `
-    mutation AddAudience($options: CreateAudienceInput!){
-      CreateAudience(viewers: $options){
+  addViewer: `
+    mutation AddViewer($options: CreateViewerInput!){
+      CreateViewer(viewers: $options){
         _id
         _name
       }
@@ -169,9 +169,9 @@ const presets = {
       }
     }
   `,
-  updateAudience: `
-    mutation UpdateAudience($options: UpdateAudienceInput!){
-      UpdateAudience(viewer: $options){
+  updateViewer: `
+    mutation UpdateViewer($options: UpdateViewerInput!){
+      UpdateViewer(viewer: $options){
         _id
         _name
       }
@@ -182,7 +182,7 @@ const presets = {
       RemoveEntries(options: $options){
         palette
         platform
-        audience
+        viewer
         customer
       }
     }

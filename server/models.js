@@ -1,5 +1,5 @@
 import Palette from './models/Palette';
-import Audience from './models/Audience';
+import Viewer from './models/Viewer';
 import Customer from './models/Customer';
 import Platform from './models/Platform';
-export { Palette, Audience, Customer, Platform }
+export { Palette, Viewer, Customer, Platform }
