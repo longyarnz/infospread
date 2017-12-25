@@ -145,8 +145,8 @@ const presets = {
     }
   `,
   updateCustomer: `
-    mutation UpdatePlatform($options: UpdatePlatformInput!){
-      UpdatePlatform(platform: $options){
+    mutation UpdateCustomer($options: UpdateCustomerInput!){
+      UpdateCustomer(user: $options){
         keyID
         _name
       }
