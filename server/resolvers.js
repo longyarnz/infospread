@@ -26,7 +26,7 @@ export default {
     RegisterAudience: ({ Audience }, { viewers }) => Audience.set(viewers),
     UpdatePalette: ({ Palette }, { palette }) => performUpdate(Palette, palette),
     UpdatePlatform: ({ Platform }, { platform }) => performUpdate(Platform, platform),
-    UpdateCustomer: ({ Customer }, { user }) => performUpdate(Customer, user),
+    UpdateCustomer: ({ Customer }, { customer }) => performUpdate(Customer, customer),
     UpdateAudience: ({ Audience }, { viewer }) => performUpdate(Audience, viewer),
     RemoveEntries: async ({ Palette, Customer, Audience, Platform }, { options }) => {
       let model, order, result = {};
