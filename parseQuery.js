@@ -16,9 +16,9 @@ const presets = {
       }
     }
   `,
-  oneViewer: `
-    query OneViewer($options: String!){
-      oneViewer(options: $options){
+  oneAudience: `
+    query oneAudience($options: String!){
+      oneAudience(options: $options){
         _id
         _name
         email
@@ -131,7 +131,7 @@ const presets = {
   `,
   addCustomer: `
     mutation AddCustomer($options: CreateCustomerInput!){
-      RegisterCustomer(users: $options){
+      CreateCustomer(users: $options){
         _id
         _name
       }
@@ -139,7 +139,7 @@ const presets = {
   `,
   addAudience: `
     mutation AddAudience($options: CreateAudienceInput!){
-      RegisterAudience(viewers: $options){
+      CreateAudience(viewers: $options){
         _id
         _name
       }
