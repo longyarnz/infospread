@@ -146,7 +146,7 @@ const presets = {
   `,
   updateCustomer: `
     mutation UpdateCustomer($options: UpdateCustomerInput!){
-      UpdateCustomer(customer: $options){
+      UpdateCustomer(user: $options){
         keyID
         _name
       }
