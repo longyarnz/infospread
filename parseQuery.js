@@ -148,7 +148,7 @@ const presets = {
     mutation UpdatePlatform($options: UpdatePlatformInput!){
       UpdatePlatform(platform: $options){
         keyID
-        title
+        _name
       }
     }
   `,
