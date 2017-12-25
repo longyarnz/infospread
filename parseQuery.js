@@ -27,7 +27,7 @@ const presets = {
       }
     }
   `,
-  oneCustumer: `
+  oneCustomer: `
     query OnePalette($options: String!){
       oneCustomer(options: $options){
         keyID
