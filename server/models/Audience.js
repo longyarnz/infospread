@@ -24,7 +24,6 @@ function loader({ limit = 1000, sort = '-_id' }) {
 }
 
 Audience.get = function(options = {}, limit = 1000, sort = '-_id'){
-  console.log(options);
   connect(); limit = loader({ limit, sort });
   return limit.load(JSON.stringify(options));
 }

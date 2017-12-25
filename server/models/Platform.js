@@ -4,7 +4,7 @@ import connect from '../mongoDB';
 import Dataloader from 'dataloader';
 
 const platformSchema = new Schema({
-  _id: { type: String, default: UUID.v4, alias: '_id' },
+  _id: { type: String, default: UUID.v4 },
   title: { type: String, required: true },
   category: { type: String, required: true },
   src_file: { type: String, required: true },

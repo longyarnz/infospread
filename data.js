@@ -9,7 +9,7 @@ export default () => {
       y = name.lastName(i), c = company.bsNoun(),
       z = random.uuid(),
       customer = {
-        keyID: u,
+        _id: u,
         _name: `${x} ${y}`,
         sex: (i % 2 === 0 ? 'MALE' : 'FEMALE'),
         email: internet.email(x, y),
@@ -17,7 +17,7 @@ export default () => {
         palettes: [z]
       },
       palette = {
-        keyID: z,
+        _id: z,
         title: company.catchPhraseNoun(),
         caption: company.catchPhraseDescriptor(),
         category: commerce.department(),

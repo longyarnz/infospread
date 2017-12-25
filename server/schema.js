@@ -7,7 +7,7 @@ export default `
 	type Query {
 		onePalette(options: String!): Palette
 		oneCustomer(options: String!): Customer
-		oneViewer(options: String!): Audience
+		oneAudience(options: String!): Audience
 		onePlatform(options: String!): Platform
 		palettes(options: UpdatePaletteInput, limit: Int, sort: String): [Palette]
 		customers(options: UpdateCustomerInput, limit: Int, sort: String): [Customer]
@@ -65,11 +65,11 @@ export default `
 	}
 
 	type Mutation {
-		RegisterCustomer(users: CreateCustomerInput!): Customer!
+		CreateCustomer(users: CreateCustomerInput!): Customer!
 		UpdateCustomer(user: UpdateCustomerInput!): Customer!
 		CreatePalette(palettes: [CreatePaletteInput!]): [Palette!]!
 		UpdatePalette(palette: UpdatePaletteInput!): Palette!
-		RegisterAudience(viewers: CreateAudienceInput!): Audience!
+		CreateAudience(viewers: CreateAudienceInput!): Audience!
 		UpdateAudience(viewer: UpdateAudienceInput!): Audience!
 		CreatePlatform(platforms: [CreatePlatformInput!]): [Platform!]!
 		UpdatePlatform(platform: UpdatePlatformInput!): Platform!

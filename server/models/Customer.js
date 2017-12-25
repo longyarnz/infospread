@@ -4,7 +4,7 @@ import connect from '../mongoDB';
 import Dataloader from 'dataloader';
 
 const customerSchema = new Schema({
-  _id: { type: String, default: UUID.v4, alias: '_id' },
+  _id: { type: String, default: UUID.v4 },
   _name: { type: String, required: true },
   email: { type: String, required: true },
   sex: { type: String, required: true },
