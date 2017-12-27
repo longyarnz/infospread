@@ -7,8 +7,6 @@ yarn-debug.log*
 yarn-error.log*
 /images
 .eslintrc.json
-yarn.lock
-package.json
 /.vscode
 .gitignore
 *.map
