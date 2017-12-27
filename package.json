@@ -19,7 +19,7 @@
     "uuid": "^3.1.0"
   },
   "scripts": {
-    "start": "node index",
+    "start": "node lib/app",
     "demon": "nodemon --exec babel-node -- app",
     "compile": "babel src -d lib -s"
   },
