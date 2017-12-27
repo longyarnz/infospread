@@ -10,6 +10,5 @@ yarn-error.log*
 yarn.lock
 package.json
 /.vscode
-/lib
 .gitignore
 *.map
