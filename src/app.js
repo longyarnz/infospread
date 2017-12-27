@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import path from 'path';
 import Data from './data';
 import multer from 'multer';
@@ -10,7 +11,7 @@ import resolvers from './server/resolvers';
 import graphHTTP from "express-graphql";
 import { makeExecutableSchema } from 'graphql-tools';
 import clearConsole from 'react-dev-utils/clearConsole';
-const PORT = process.env.PORT, HOST = '0.0.0.0';
+const PORT = 4002, HOST = '127.0.0.1';
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const App = express();
 const storage = multer.diskStorage({
