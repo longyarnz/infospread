@@ -5,7 +5,7 @@ const presets = {
         _id
         title
         category
-        src_file
+        uri
         tags
         author{
           _id
@@ -39,7 +39,7 @@ const presets = {
           _id
           title
           category
-          src_file
+          uri
           tags
         }
       }
@@ -51,7 +51,7 @@ const presets = {
         _id
         title
         category
-        src_file
+        uri
       }
     }
   `,
@@ -61,7 +61,7 @@ const presets = {
         _id
         title
         category
-        src_file
+        uri
         tags
         author{
           _id
@@ -78,7 +78,7 @@ const presets = {
         _id
         title
         category
-        src_file
+        uri
       }
     }
   `,
@@ -104,7 +104,7 @@ const presets = {
           _id
           title
           category
-          src_file
+          uri
           tags
         }
       }
@@ -114,10 +114,6 @@ const presets = {
     mutation AddPalettes($options: [CreatePaletteInput!]){
       CreatePalette(palettes: $options){
         _id
-        author{
-          _id
-          _name
-        }
       }
     }
   `,
@@ -125,7 +121,6 @@ const presets = {
     mutation AddPlatform($options: [CreatePlatformInput!]){
       CreatePlatform(platforms: $options){
         _id
-        title
       }
     }
   `,
@@ -133,7 +128,6 @@ const presets = {
     mutation AddCustomer($options: CreateCustomerInput!){
       CreateCustomer(users: $options){
         _id
-        _name
       }
     }
   `,
@@ -141,7 +135,6 @@ const presets = {
     mutation AddViewer($options: CreateViewerInput!){
       CreateViewer(viewers: $options){
         _id
-        _name
       }
     }
   `,
@@ -149,7 +142,6 @@ const presets = {
     mutation UpdateCustomer($options: UpdateCustomerInput!){
       UpdateCustomer(user: $options){
         _id
-        _name
       }
     }
   `,
@@ -157,7 +149,6 @@ const presets = {
     mutation UpdatePalette($options: UpdatePaletteInput!){
       UpdatePalette(palette: $options){
         _id
-        title
       }
     }
   `,
@@ -165,7 +156,6 @@ const presets = {
     mutation UpdatePlatform($options: UpdatePlatformInput!){
       UpdatePlatform(platform: $options){
         _id
-        title
       }
     }
   `,
@@ -173,7 +163,6 @@ const presets = {
     mutation UpdateViewer($options: UpdateViewerInput!){
       UpdateViewer(viewer: $options){
         _id
-        _name
       }
     }
   `,

@@ -7,13 +7,13 @@ const platformSchema = new Schema({
   _id: { type: String, default: UUID.v4 },
   title: { type: String, required: true },
   category: { type: String, required: true },
-  src_file: { type: String, required: true },
+  uri: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 
 const Platform = Mongoose.model('Platform', platformSchema);
 
-function loader({ limit = 1000, sort = '-_id' }) {
+function loader({ limit = 1000, sort = '-createdAt' }) {
   const find = obj => Platform.find(JSON.parse(obj)).limit(limit)
     .sort(sort).exec(Platform.disconnect).then(res => {
       return res.length > 1 ? [res] : res
@@ -21,7 +21,7 @@ function loader({ limit = 1000, sort = '-_id' }) {
   return new Dataloader(find);
 }
 
-Platform.get = function(options = {}, limit = 1000, sort = '-_id'){
+Platform.get = function(options = {}, limit = 1000, sort = '-createdAt'){
   connect(); limit = loader({ limit, sort });
   return limit.load(JSON.stringify(options));
 }

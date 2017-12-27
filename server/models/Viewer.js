@@ -15,7 +15,7 @@ const viewerSchema = new Schema({
 
 const Viewer = Mongoose.model('Viewer', viewerSchema);
 
-function loader({ limit = 1000, sort = '-_id' }) {
+function loader({ limit = 1000, sort = '-createdAt' }) {
   const find = obj => Viewer.find(JSON.parse(obj)).limit(limit)
     .sort(sort).exec(Viewer.disconnect).then(res => {
       return res.length > 1 ? [res] : res
@@ -23,7 +23,7 @@ function loader({ limit = 1000, sort = '-_id' }) {
   return new Dataloader(find);
 }
 
-Viewer.get = function(options = {}, limit = 1000, sort = '-_id'){
+Viewer.get = function(options = {}, limit = 1000, sort = '-createdAt'){
   connect(); limit = loader({ limit, sort });
   return limit.load(JSON.stringify(options));
 }

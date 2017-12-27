@@ -22,13 +22,13 @@ export default () => {
         caption: company.catchPhraseDescriptor(),
         category: commerce.department(),
         tags: [a, b, c],
-        src_file: image.imageUrl(),
+        uri: image.imageUrl(),
         author: u
       },
       platform = {
         title: company.catchPhraseNoun(),
         category: commerce.department(),
-        src_file: image.imageUrl()
+        uri: image.imageUrl()
       },
       viewer = {
         _name: `${x} ${y}`,

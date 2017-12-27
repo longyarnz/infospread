@@ -9,14 +9,14 @@ const paletteSchema = new Schema({
   caption: { type: String, required: true },
   category: { type: String, required: true },
   tags: { type: [String], required: true },
-  src_file: { type: String, required: true },
+  uri: { type: String, required: true },
   author: { type: String, required: true, ref: 'Customer' },
   createdAt: { type: Date, default: Date.now }
 });
 
 const Palette = Mongoose.model('Palette', paletteSchema);
 
-function loader({limit = 1000, sort = '-_id', populate = 'author'}) {
+function loader({limit = 1000, sort = '-createdAt', populate = 'author'}) {
   const find = obj => Palette.find(JSON.parse(obj)).limit(limit)
     .sort(sort).populate(populate).exec(Palette.disconnect).then(res => {
       return res.length > 1 ? [res] : res
@@ -32,7 +32,10 @@ Palette.get = function(options = {}, limit, sort){
 Palette.set = function(palettes){
   connect();
   loader({}).clear(JSON.stringify({}));
-  return this.create(palettes, this.disconnect).then(([{_id}]) => [this.get({ _id })]);
+  return this.create(palettes, this.disconnect).then(([{_id, author}]) => {
+    console.log(author);
+    return [this.get({ _id })];
+  });
 }   
 
 Palette.reset = function(options, items){

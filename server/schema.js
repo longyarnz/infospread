@@ -27,7 +27,7 @@ export default `
 		category: String
 		author: Customer
 		tags: [String]
-		src_file: String
+		uri: String
 		createdAt: String
 	}
 
@@ -53,7 +53,7 @@ export default `
 		_id: String
 		title: String
 		category: String
-		src_file: String
+		uri: String
 		createdAt: String
 	}
 
@@ -97,13 +97,13 @@ export default `
 		category: String!
 		author: String
 		tags: [String!]
-		src_file: String!
+		uri: String!
 	}
 	
 	input CreatePlatformInput {
 		title: String!
 		category: String!
-		src_file: String!
+		uri: String!
 	}
 
 	input UpdateViewerInput {
@@ -131,14 +131,14 @@ export default `
 		category: String
 		author: String
 		tags: [String!]
-		src_file: String
+		uri: String
 	}
 	
 	input UpdatePlatformInput {
 		_id: String
 		title: String
 		category: String
-		src_file: String
+		uri: String
 	}
 
 	input DeleteInput {

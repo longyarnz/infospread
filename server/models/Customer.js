@@ -23,7 +23,7 @@ function loader({ limit, sort, populate = 'palettes' }) {
   return new Dataloader(find);
 }
 
-Customer.get = function (options = {}, limit = 100, sort = '-_id') {
+Customer.get = function (options = {}, limit = 100, sort = '-createdAt') {
   connect(); limit = loader({ limit, sort });
   return limit.load(JSON.stringify(options));
 }
