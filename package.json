@@ -24,11 +24,12 @@
     "babel-loader": "^6.4.1",
     "babel-preset-env": "^1.2.1",
     "babel-preset-es2016": "^6.24.1",
-    "faker": "^4.1.0"
+    "faker": "^4.1.0",
+    "nodemon": "^1.12.1"
   },
   "scripts": {
     "start": "node lib/app",
-    "demon": "nodemon --exec babel-node -- app",
+    "demon": "nodemon --exec babel-node -- src/app",
     "compile": "babel src -d lib -s"
   },
   "engines": {
@@ -39,7 +40,6 @@
   "devDependencies": {
     "eslint": "^4.12.1",
     "eslint-config-google": "^0.9.1",
-    "eslint-plugin-react": "^7.5.1",
-    "nodemon": "^1.12.1"
+    "eslint-plugin-react": "^7.5.1"
   }
 }
