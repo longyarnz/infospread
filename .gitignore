@@ -8,6 +8,6 @@ yarn-error.log*
 /images
 .eslintrc.json
 /.vscode
-.gitignore
 *.map
 /lib
+/data
