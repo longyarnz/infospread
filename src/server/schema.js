@@ -9,11 +9,26 @@ export default `
 		oneCustomer(options: String!): Customer
 		oneViewer(options: String!): Viewer
 		onePlatform(options: String!): Platform
-		palettes(options: UpdatePaletteInput, limit: Int, sort: String): [Palette]
-		customers(options: UpdateCustomerInput, limit: Int, sort: String): [Customer]
-		viewers(options: UpdateViewerInput, limit: Int, sort: String): [Viewer]
-		platforms(options: UpdatePlatformInput, limit: Int, sort: String): [Platform]
-		SearchPalettes(tags: [String!], limit: Int, sort: String): [Palette]
+		palettes(options: UpdatePaletteInput, limit: Int, sort: allFields): [Palette]
+		customers(options: UpdateCustomerInput, limit: Int, sort: allFields): [Customer]
+		viewers(options: UpdateViewerInput, limit: Int, sort: allFields): [Viewer]
+		platforms(options: UpdatePlatformInput, limit: Int, sort: allFields): [Platform]
+		SearchPalettes(tags: [String!], limit: Int, sort: allFields): [Palette]
+	}
+
+	type allFields{
+		_id: String
+		caption: String
+		title: String
+		category: String
+		author: String
+		tags: [String]
+		uri: String
+		createdAt: String
+		_name: String
+		email: String
+		sex: String
+		phone: String
 	}
 
 	enum Sex{

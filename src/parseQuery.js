@@ -230,14 +230,14 @@ const presets = {
 export default (req, res, next) => {
   try {
     const num = req.body.query.search(/introspection/i);
-    if (num > -1) res.end();
+    if (num > -1) res.end("Invalid Query");
   }
   catch (err) {
-    res.end();
+    res.end("Invalid Query");
   }
   if (presets.hasOwnProperty(req.body.query)){
     req.body.query = presets[req.body.query];
     next();
   }
-  else res.end();
+  else res.end("Invalid Query");
 }
