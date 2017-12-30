@@ -159,8 +159,8 @@ Example:
 The queries opened to this API are static. They contain prescribed data requirements and they output specified type of data.  
 The queries must be sent in a **JSON** format via **AJAX** or the **FETCH API**. The schema of a valid query is as follows:
 #### Query (JSON)
-     * **query**: String denoting name of server operation.
-     * **variables**: key/value pair of strings or objects.
+   * **query**: String denoting name of server operation.
+   * **variables**: key/value pair of strings or objects.
 
 
 ### Types of Queries
@@ -706,6 +706,6 @@ The schema of a valid server response is represented below:
   // If query is unsuccessful
   const errorResponse = {
     data: null,
-    error: __ERROR INFO_
+    error: __ERROR INFO__
   }
 ```
