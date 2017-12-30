@@ -41,7 +41,7 @@ The schemas are defined below:
       }
     `;
   ```  
-*The _palettes_ field contains an array of ID!s that make reference to the uploaded documents of the customer*
+**The __palettes__ field contains an array of ID!s that make reference to the uploaded documents of the customer**
 
 #### Palettes
   ``` js
@@ -58,7 +58,7 @@ The schemas are defined below:
       }
     `;
   ```  
-*The _author_ field contains an array of ID!s that make reference to the customer owners*
+**The __author__ field contains an array of ID!s that make reference to the customer owners**
 
 #### Viewers
   ``` js
@@ -73,7 +73,7 @@ The schemas are defined below:
       }
     `;
   ```  
-*The _interests_ field contains an array of strings denoting the viewers interests*
+**The __interests__ field contains an array of strings denoting the viewers interests**
 
 #### Platforms
   ``` js
@@ -91,17 +91,17 @@ The schemas are defined below:
 ### API Endpoints
 
 There are following endpoints (2) exposed to the API:
-1) infospread.herokuapp.com/api/xxxx: There are 4 options for the *xxxx* fields:
-  * Customer: *infospread.herokuapp.com/api/customers* loads all the customer data in the database.
-  * Palettes: *infospread.herokuapp.com/api/palettes* loads all the palette data in the database.
-  * Platform: *infospread.herokuapp.com/api/platforms* loads all the platform data in the database.
-  * Viewer: *infospread.herokuapp.com/api/viewers* loads all the viewer data in the database.
+1) **infospread.herokuapp.com/api/_xxxx_**: There are 4 options for the *xxxx* fields:
+     * **Customer**: **infospread.herokuapp.com/api/customers** loads all the customer data in the database.
+     * **Palettes**: **infospread.herokuapp.com/api/palettes** loads all the palette data in the database.
+     * **Platform**: **infospread.herokuapp.com/api/platforms** loads all the platform data in the database.
+     * **Viewer**: **infospread.herokuapp.com/api/viewers** loads all the viewer data in the database.
 
 2) infospread.herokuapp.com/spread: This endpoint collects queries and executes them against the database. When a request is sent to the API, it validates the request before sending to the Mongo server. Prequisites for a valid request are:
-  * It must be sent via the http *POST* method.
-  * It must contain a request object in JSON format.
-  * The request JSON must contain contain a *query* field and an optional *variables* field: The posted request must contain a query field where the query name is stored. All possible queries are listed under the *Using Queries Topic*.
-  * The Content-Type header of the request must be set to *application/json*.
+     * It must be sent via the http *POST* method.
+     * It must contain a request object in JSON format.
+     * The request JSON must contain contain a *query* field and an optional *variables* field: The posted request must contain a query field where the query name is stored. All possible queries are listed under the *Using Queries Topic*.
+     * The Content-Type header of the request must be set to *application/json*.
 
 Example:
   ```js
@@ -125,7 +125,7 @@ Example:
   ).then(response => response.json()); // Server response must be converted from JSON to literal Object
 ```
   
-  *OR*
+  **OR**
 
 ```js
   const URI = 'infospread.herokuapp.com/spread';
@@ -136,8 +136,8 @@ Example:
     variables: {
       options: ["deliverables", "users", "systems"]
     }
-  }
-  // REQUEST must be parsed into JSON
+  }  
+  // REQUEST must be parsed into JSON  
   REQUEST = JSON.stringify(REQUEST);
   return new Promise((resolve, reject) => {
     const ajax = new XMLHttpRequest();
@@ -157,9 +157,9 @@ Example:
 ### Queries
 The queries opened to this API are static. They contain prescribed data requirements and they output specified type of data.  
 The queries must be sent in a *JSON* format via *AJAX* or the *FETCH API*. The schema of a valid query is as follows:
-* Query (JSON)
-  * query: String denoting name of server operation.
-  * variables: key/value pair of strings or objects.
+#### Query (JSON)
+     * **query**: String denoting name of server operation.
+     * **variables**: key/value pair of strings or objects.
 
 
 ### Types of Queries
@@ -221,7 +221,7 @@ The *onePalette* query returns one document of type *Palette* from the API. The 
   REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
-The *oneCustomer* query returns one document of type *Customer* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
+The **oneCustomer** query returns one document of type *Customer* from the API. The query takes a *variables* object with a key of **options** and a value which represents the unique ID! of the document.
 
 
 #### oneViewer
@@ -236,7 +236,7 @@ The *oneCustomer* query returns one document of type *Customer* from the API. Th
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-The *oneViewer* query returns one document of type *Viewer* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
+The **oneViewer** query returns one document of type *Viewer* from the API. The query takes a **variables** object with a key of **options** and a value which represents the unique ID! of the document.
 
 
 #### onePlatform
@@ -251,7 +251,7 @@ The *oneViewer* query returns one document of type *Viewer* from the API. The qu
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-The *onePlatform* query returns one document of type *Platform* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
+The **onePlatform** query returns one document of type *Platform* from the API. The query takes a **variables** object with a key of **options** and a value which represents the unique ID! of the document.
 
 
 #### getPalettes
@@ -275,12 +275,12 @@ The *onePlatform* query returns one document of type *Platform* from the API. Th
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => SELECT FROM `palettes` WHERE `_id` = String AND `title` = String AND blah blah blah.
+**NB**: This query translates to => SELECT FROM `palettes` WHERE `_id` = String AND `title` = String AND blah blah blah.
 
-The *getPalettes* query returns an array of documents of type *Palette* from the API. The query takes a *variables* object with the following keys:
-* options: it takes an object with the keys specified in the example above.
-* limit: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
-* sort: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
+The **getPalettes** query returns an array of documents of type **Palette** from the API. The query takes a **variables** object with the following keys:
+   * **options**: it takes an object with the keys specified in the example above.
+   * **limit**: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
+   * **sort**: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
 
 #### searchPalettes
 ``` js
