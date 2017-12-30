@@ -199,7 +199,7 @@ const presets = {
     }
   `,
   searchPalettes: `
-    query searchPalettes($options: [String!], $limit: Int, $sort: String){
+    query searchPalettes($options: [String!], $limit: Int, $sort: allFields){
       SearchPalettes(limit: $limit, sort: $sort, tags: $options){
         _id
         title
