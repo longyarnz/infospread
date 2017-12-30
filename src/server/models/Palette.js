@@ -61,9 +61,8 @@ Palette.addTags = function(items){
     if (Array.isArray(i)) throw 'Tags contain array';
   }
   return new Promise(resolve => {
-    this.update({ _id }, {$addToSet: {'tags': {$each: tags}}}, (err, docs) => {
+    this.update({ _id }, {$addToSet: {'tags': {$each: tags}}}, err => {
       if (err) throw err;
-      console.log(docs);
       resolve(this.getOne(_id));
       this.disconnect();
     });
@@ -76,11 +75,9 @@ Palette.removeTags = function(items){
   if (!check) return null;
   let { tags, _id } = items;
   tags = Array.isArray(tags) ? tags : [ tags ];
-  console.log(items);
   return new Promise(resolve => {
     this.update({ _id }, {$pullAll: {tags}}, (err, docs) => {
       if (err) throw err;
-      console.log(docs);
       resolve(this.getOne(_id));
       this.disconnect();
     });
@@ -92,6 +89,6 @@ Palette.erase = function(doc){
   return this.remove(doc, this.disconnect);
 }
 
-Palette.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
+Palette.disconnect = () => Mongoose.disconnect(() => ('Database Disconnected...'));
 
 export default Palette;

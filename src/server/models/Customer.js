@@ -16,7 +16,6 @@ const Customer = Mongoose.model('Customer', customerSchema);
 
 Customer.get = function (options = {}, limit = 1000, sort = '-createdAt') {
   connect();
-  console.log(options);
   return this.find(options, null, { limit, sort, populate: 'palettes' }, this.disconnect);
 }
 
@@ -45,6 +44,6 @@ Customer.reset = function (options, customer) {
   })
 }
 
-Customer.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
+Customer.disconnect = () => Mongoose.disconnect(() => ('Database Disconnected...'));
 
 export default Customer;

@@ -42,6 +42,6 @@ Platform.erase = function(doc){
   return this.remove(doc, this.disconnect);
 }
 
-Platform.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
+Platform.disconnect = () => Mongoose.disconnect(() => ('Database Disconnected...'));
 
 export default Platform;

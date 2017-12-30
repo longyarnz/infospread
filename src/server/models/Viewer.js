@@ -38,11 +38,9 @@ Viewer.addInterests = function (items) {
   for (const i of interests) {
     if (Array.isArray(i)) throw 'Interests contain array';
   }
-  console.log(items);
   return new Promise(resolve => {
-    this.update({ _id }, { $addToSet: { 'interests': { $each: interests } } }, (err, docs) => {
+    this.update({ _id }, { $addToSet: { 'interests': { $each: interests } } }, err => {
       if (err) throw err;
-      console.log(docs);
       resolve(this.getOne(_id));
     });
   });
@@ -54,11 +52,9 @@ Viewer.removeInterests = function (items) {
   if (!check) return null;
   let { interests, _id } = items;
   interests = Array.isArray(interests) ? interests : [interests];
-  console.log(items);
   return new Promise(resolve => {
-    this.update({ _id }, { $pullAll: { interests } }, (err, docs) => {
+    this.update({ _id }, { $pullAll: { interests } }, err => {
       if (err) throw err;
-      console.log(docs);
       this.disconnect();
       resolve(this.getOne(_id));
     });
@@ -75,13 +71,12 @@ Viewer.reset = function (options, viewer) {
   return new Promise(resolve => {
     this.update(options, viewer, (err, docs) => {
       if (err) throw err;
-      console.log(docs);
       this.disconnect();
       resolve(docs);
     });
   })
 }
 
-Viewer.disconnect = () => Mongoose.disconnect(() => console.log('Database Disconnected...'));
+Viewer.disconnect = () => Mongoose.disconnect(() => ('Database Disconnected...'));
 
 export default Viewer;
