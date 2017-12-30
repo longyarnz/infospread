@@ -7,19 +7,29 @@ function performUpdate(model, args){
   });
 }
 
+function search(model, tags, limit, sort){
+  tags = Array.isArray(tags) ? tags : [ tags ];
+  tags = {tags: {$in: tags}}
+  return model.get(tags, limit, sort);
+}
 
 export default {
   Query: {
-    onePalette: ({ Palette }, { options }) => Palette.get({_id: options}),
-    oneCustomer: ({ Customer }, { options }) => Customer.get({_id: options}),
-    onePlatform: ({ Platform }, { options }) => Platform.get({_id: options}),
-    oneViewer: ({ Viewer }, { options }) => Viewer.get({_id: options}),
+    onePalette: ({ Palette }, { options }) => Palette.getOne(options),
+    oneCustomer: ({ Customer }, { options }) => Customer.getOne(options),
+    onePlatform: ({ Platform }, { options }) => Platform.getOne(options),
+    oneViewer: ({ Viewer }, { options }) => Viewer.getOne(options),
     palettes: ({ Palette }, { options, limit, sort }) => Palette.get(options, limit, sort),
     customers: ({ Customer }, { options, limit, sort }) => Customer.get(options, limit, sort),
     viewers: ({ Viewer }, { options, limit, sort }) => Viewer.get(options, limit, sort),
-    platforms: ({ Platform }, { options, limit, sort }) => Platform.get(options, limit, sort)
+    platforms: ({ Platform }, { options, limit, sort }) => Platform.get(options, limit, sort),
+    SearchPalettes: ({ Palette }, { tags, limit, sort }) => search(Palette, tags, limit, sort)
   },
   Mutation: {
+    AddTags:({ Palette }, { tags }) => Palette.addTags(tags),
+    RemoveTags:({ Palette }, { tags }) => Palette.removeTags(tags),
+    AddInterests:({ Viewer }, { interests }) => Viewer.addInterests(interests),
+    RemoveInterests:({ Viewer }, { interests }) => Viewer.removeInterests(interests),
     CreatePalette: ({ Palette }, { palettes }) => Palette.set(palettes),
     CreatePlatform: ({ Platform }, { platforms }) => Platform.set(platforms),
     CreateCustomer: ({ Customer }, { users }) => Customer.set(users),

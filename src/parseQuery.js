@@ -1,6 +1,6 @@
 const presets = {
   onePalette: `
-    query OnePalette($options: String!){
+    query onePalette($options: String!){
       onePalette(options: $options){
         _id
         title
@@ -84,7 +84,7 @@ const presets = {
   `,
   getViewers: `
     query GetViewers($limit: Int, $sort: String, $options: UpdateViewerInput){
-      viewer(limit: $limit, sort: $sort, options: $options) {
+      viewers(limit: $limit, sort: $sort, options: $options) {
         _id
         _name
         email
@@ -163,6 +163,55 @@ const presets = {
     mutation UpdateViewer($options: UpdateViewerInput!){
       UpdateViewer(viewer: $options){
         _id
+      }
+    }
+  `,
+  addTags: `
+    mutation addTags($options: TagsInput!){
+      AddTags(tags: $options){
+        _id
+        tags
+      }
+    }
+  `,
+  removeTags: `
+    mutation removeTags($options: TagsInput!){
+      RemoveTags(tags: $options){
+        _id
+        tags
+      }
+    }
+  `,
+  addInterests: `
+    mutation addInterests($options: InterestsInput!){
+      AddInterests(interests: $options){
+        _id
+        interests
+      }
+    }
+  `,
+  removeInterests: `
+    mutation removeInterests($options: InterestsInput!){
+      RemoveInterests(interests: $options){
+        _id
+        interests
+      }
+    }
+  `,
+  searchPalettes: `
+    query searchPalettes($options: [String!], $limit: Int, $sort: String){
+      SearchPalettes(limit: $limit, sort: $sort, tags: $options){
+        _id
+        title
+        category
+        uri
+        tags
+        author{
+          _id
+          _name
+          email
+          phone
+        }
       }
     }
   `,

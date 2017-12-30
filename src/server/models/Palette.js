@@ -1,7 +1,6 @@
 import UUID from 'uuid';
 import Mongoose, { Schema } from 'mongoose';
 import connect from '../mongoDB';
-import Dataloader from 'dataloader';
 import Customer from './Customer';
 
 const paletteSchema = new Schema({
@@ -17,22 +16,19 @@ const paletteSchema = new Schema({
 
 const Palette = Mongoose.model('Palette', paletteSchema);
 
-function loader({limit = 1000, sort = '-createdAt', populate = 'author'}) {
-  const find = obj => Palette.find(JSON.parse(obj)).limit(limit)
-    .sort(sort).populate(populate).exec(Palette.disconnect).then(res => {
-      return res.length > 1 ? [res] : res
-    });
-  return new Dataloader(find);
+Palette.get = function (options = {}, limit = 1000, sort = '-createdAt'){    
+  connect();
+  return this.find(options, null, { limit, sort, populate: 'author' }, this.disconnect);
 }
 
-Palette.get = function(options = {}, limit, sort){    
-  connect(); limit = loader({ limit, sort });
-  return limit.load(JSON.stringify(options));
+Palette.getOne = function (_id){    
+  connect();
+  return this.findById(_id, null, { populate: 'author' }, this.disconnect);
 }
 
 Palette.set = function(palettes){
   connect();
-  loader({}).clear(JSON.stringify({}));
+  
   return this.create(palettes, this.disconnect).then(docs => {
     docs.forEach(({ _id, author }) => {
       Customer.reset({ _id: author }, {'$addToSet': {'palettes': _id}});
@@ -41,63 +37,55 @@ Palette.set = function(palettes){
   });
 }   
 
-Palette.reset = function(options, items){
+Palette.reset = function(_id, items){
   connect();
-  loader({}).clear(JSON.stringify({}));
+  
   const check = hasOwnProperty.call(items, 'tags');
-  let tags = null;
-  console.log(check);
-  if(check) {
-    tags = items.tags;
-    delete items.tags;
-    console.log(items);
-  }
-  if(tags && Object.keys(items).length > 1) return new Promise(resolve => {
-    this.update(options, {$set: { items }, $addToSet: {'tags': {$each: tags}}}, (err, docs) => {
+  if (!check) throw "'tags' object is present in the query";
+  return new Promise(resolve => {
+    this.update(_id, items, (err, docs) => {
       if (err) throw err;
       resolve(docs);
     });
   });
-  else if(tags && Object.keys(items).length === 1) return new Promise(resolve => {
-    this.update(options, {$addToSet: {'tags': {$each: tags}}}, (err, docs) => {
-      if (err) throw err;
-      console.log('no');
-      resolve(docs);
-    });
-  });
-  else return [null];
 }
 
-Palette.removeTags = function(options, items){
+Palette.addTags = function(items){
   connect();
-  loader({}).clear(JSON.stringify({}));
   const check = hasOwnProperty.call(items, 'tags');
-  let tags = null;
-  console.log(check);
-  if(check) {
-    tags = items.tags;
-    delete items.tags;
-    console.log(items);
+  if (!check) throw "No 'tags' object in the query";
+  let { tags, _id } = items;
+  tags = Array.isArray(tags) ? tags : [ tags ];
+  for (const i of tags) {
+    if (Array.isArray(i)) throw 'Tags contain array';
   }
-  if(tags && Object.keys(items).length > 1) return new Promise(resolve => {
-    this.update(options, {$set: { items }, $addToSet: {'tags': {$each: tags}}}, (err, docs) => {
+  return new Promise(resolve => {
+    this.update({ _id }, {$addToSet: {'tags': {$each: tags}}}, (err, docs) => {
       if (err) throw err;
-      resolve(docs);
+      console.log(docs);
+      resolve(this.get({ _id }));
     });
   });
-  else if(tags && Object.keys(items).length === 1) return new Promise(resolve => {
-    this.update(options, {$addToSet: {'tags': {$each: tags}}}, (err, docs) => {
+}
+
+Palette.removeTags = function(items){
+  connect();
+  const check = hasOwnProperty.call(items, 'tags');
+  if (!check) return null;
+  let { tags, _id } = items;
+  tags = Array.isArray(tags) ? tags : [ tags ];
+  console.log(items);
+  return new Promise(resolve => {
+    this.update({ _id }, {$pullAll: {tags}}, (err, docs) => {
       if (err) throw err;
-      console.log('no');
-      resolve(docs);
+      console.log(docs);
+      resolve(this.get({ _id }));
     });
   });
-  else return [null];
 }
 
 Palette.erase = function(doc){
   connect();
-  loader({}).clear(JSON.stringify({}));
   return this.remove(doc, this.disconnect);
 }
 

@@ -13,6 +13,7 @@ export default `
 		customers(options: UpdateCustomerInput, limit: Int, sort: String): [Customer]
 		viewers(options: UpdateViewerInput, limit: Int, sort: String): [Viewer]
 		platforms(options: UpdatePlatformInput, limit: Int, sort: String): [Platform]
+		SearchPalettes(tags: [String!], limit: Int, sort: String): [Palette]
 	}
 
 	enum Sex{
@@ -65,6 +66,10 @@ export default `
 	}
 
 	type Mutation {
+		AddTags(tags: TagsInput!): Palette!
+		RemoveTags(tags: TagsInput!): Palette!
+		AddInterests(interests: InterestsInput!): Viewer!
+		RemoveInterests(interests: InterestsInput!): Viewer!
 		CreateCustomer(users: CreateCustomerInput!): Customer!
 		UpdateCustomer(user: UpdateCustomerInput!): Customer!
 		CreatePalette(palettes: [CreatePaletteInput!]): [Palette!]!
@@ -132,6 +137,16 @@ export default `
 		author: String
 		tags: [String!]
 		uri: String
+	}
+
+	input TagsInput {
+		_id: String!
+		tags: [String!]
+	}
+
+	input InterestsInput {
+		_id: String!
+		interests: [String!]
 	}
 	
 	input UpdatePlatformInput {

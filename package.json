@@ -29,6 +29,7 @@
   },
   "scripts": {
     "start": "node lib/app",
+    "app": "nodemon --exec babel-node -- lib/app",
     "demon": "nodemon --exec babel-node -- src/app",
     "compile": "babel src -d lib -s"
   },

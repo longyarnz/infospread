@@ -1,7 +1,6 @@
 import UUID from 'uuid';
 import Mongoose, { Schema } from 'mongoose';
 import connect from '../mongoDB';
-import Dataloader from 'dataloader';
 
 const customerSchema = new Schema({
   _id: { type: String, default: UUID.v4 },
@@ -15,34 +14,29 @@ const customerSchema = new Schema({
 
 const Customer = Mongoose.model('Customer', customerSchema);
 
-function loader({ limit, sort, populate = 'palettes' }) {
-  const find = obj => Customer.find(JSON.parse(obj)).limit(limit)
-    .sort(sort).populate(populate).exec(Customer.disconnect).then(res => {
-      return res.length > 1 ? [res] : res
-    });
-  return new Dataloader(find);
+Customer.get = function (options = {}, limit = 1000, sort = '-createdAt') {
+  connect();
+  console.log(options);
+  return this.find(options, null, { limit, sort, populate: 'palettes' }, this.disconnect);
 }
 
-Customer.get = function (options = {}, limit = 100, sort = '-createdAt') {
-  connect(); limit = loader({ limit, sort });
-  return limit.load(JSON.stringify(options));
+Customer.getOne = function (_id) {
+  connect();
+  return this.findById(_id, null, { populate: 'palettes' }, this.disconnect);
 }
 
 Customer.set = function (customer) {
   connect();
-  loader({}).clear(JSON.stringify({}));
   return this.create(customer, this.disconnect);
 }
 
 Customer.erase = function (doc) {
   connect();
-  loader({}).clear(JSON.stringify({}));
   return this.remove(doc, this.disconnect);
 }
 
 Customer.reset = function (options, customer) {
   connect();
-  loader({}).clear(JSON.stringify({}));
   return new Promise(resolve => {
     this.update(options, customer, (err, docs) => {
       if(err) throw err;
