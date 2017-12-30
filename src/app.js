@@ -23,7 +23,10 @@ const storage = multer.diskStorage({
 });
 App.use(express.static('build'));
 App.use(express.static('images'));
-App.get('/populate', (req, res) => res.json(Data()));
+App.get('/populate', async (req, res) => {
+  const data = await Data();
+  return res.json(data);
+});
 App.get('/api/palettes', (req, res) => {
   rootValue.Palette.get({}).then(palettes => {
     rootValue.Palette.disconnect();  

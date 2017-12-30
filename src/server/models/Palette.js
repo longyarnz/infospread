@@ -29,9 +29,11 @@ Palette.getOne = function (_id){
 Palette.set = function(palettes){
   connect();
   return this.create(palettes, this.disconnect).then(docs => {
-    docs.forEach(({ _id, author }) => {
-      Customer.reset({ _id: author }, {'$addToSet': {'palettes': _id}});
-    });
+    if (Array.isArray(docs)) {
+      docs.forEach(({ _id, author }) => {
+        Customer.reset({ _id: author }, {'$addToSet': {'palettes': _id}});
+      });
+    }
     return docs;
   });
 }   
@@ -44,6 +46,7 @@ Palette.reset = function(_id, items){
     this.update(_id, items, (err, docs) => {
       if (err) throw err;
       resolve(docs);
+      this.disconnect();
     });
   });
 }
@@ -61,7 +64,8 @@ Palette.addTags = function(items){
     this.update({ _id }, {$addToSet: {'tags': {$each: tags}}}, (err, docs) => {
       if (err) throw err;
       console.log(docs);
-      resolve(this.get({ _id }));
+      resolve(this.getOne(_id));
+      this.disconnect();
     });
   });
 }
@@ -77,7 +81,8 @@ Palette.removeTags = function(items){
     this.update({ _id }, {$pullAll: {tags}}, (err, docs) => {
       if (err) throw err;
       console.log(docs);
-      resolve(this.get({ _id }));
+      resolve(this.getOne(_id));
+      this.disconnect();
     });
   });
 }

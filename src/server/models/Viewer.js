@@ -43,14 +43,13 @@ Viewer.addInterests = function (items) {
     this.update({ _id }, { $addToSet: { 'interests': { $each: interests } } }, (err, docs) => {
       if (err) throw err;
       console.log(docs);
-      resolve(this.get({ _id }));
+      resolve(this.getOne(_id));
     });
   });
 }
 
 Viewer.removeInterests = function (items) {
   connect();
-  
   const check = hasOwnProperty.call(items, 'interests');
   if (!check) return null;
   let { interests, _id } = items;
@@ -60,14 +59,14 @@ Viewer.removeInterests = function (items) {
     this.update({ _id }, { $pullAll: { interests } }, (err, docs) => {
       if (err) throw err;
       console.log(docs);
-      resolve(this.get({ _id }));
+      this.disconnect();
+      resolve(this.getOne(_id));
     });
   });
 }
 
 Viewer.erase = function(doc){
   connect();
-  
   return Viewer.remove(doc, this.disconnect);
 }
 
@@ -76,6 +75,8 @@ Viewer.reset = function (options, viewer) {
   return new Promise(resolve => {
     this.update(options, viewer, (err, docs) => {
       if (err) throw err;
+      console.log(docs);
+      this.disconnect();
       resolve(docs);
     });
   })

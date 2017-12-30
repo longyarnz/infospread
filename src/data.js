@@ -39,12 +39,11 @@ export default () => {
       }
     return { customer, palette, platform, viewer }
   });
-  return data.map(({ customer, palette, platform, viewer }) => {
-    return [
-      Customer.set(customer, Customer.disconnect),
-      Palette.set(palette, Palette.disconnect),
-      Platform.set(platform, Platform.disconnect),
-      Viewer.set(viewer, Viewer.disconnect)
-    ]
+  return data.map(async ({ customer, palette, platform, viewer }) => {
+    const a = Customer.set(customer, Customer.disconnect),
+      b = Palette.set(palette, Palette.disconnect),
+      c = Platform.set(platform, Platform.disconnect),
+      d = Viewer.set(viewer, Viewer.disconnect);
+    return { a, b, c, d };
   });
 };
