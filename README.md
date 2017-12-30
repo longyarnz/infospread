@@ -595,9 +595,9 @@ The **removeInterests** query returns a viewer ID! and remaining interests.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-**NB**: This query translates to => UPDATE `Viewers` SET `_name` = String, `email` = String WHERE `_id` = **String**...blah blah blah.  
+**NB**: This query translates to => UPDATE `Viewers` SET `_name` = **String**, `email` = **String** WHERE `_id` = **String**...blah blah blah.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
-The **addViewers** query returns an updated Viewer document.
+The **updateViewers** query returns an updated Viewer document.
 
 
 #### updateCustomer
@@ -619,9 +619,9 @@ The **addViewers** query returns an updated Viewer document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-**NB**: This query translates to => UPDATE `Customers` SET `_name` = String, `email` = String WHERE `_id` = **String**...blah blah blah.  
+**NB**: This query translates to => UPDATE `Customers` SET `_name` = **String**, `email` = String WHERE `_id` = **String**.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
-The **addCustomers** query returns an updated Customer document.
+The **updateCustomers** query returns an updated Customer document.
 
 
 #### updatePalette
@@ -644,9 +644,9 @@ The **addCustomers** query returns an updated Customer document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-**NB**: This query translates to => UPDATE `Palettes` SET `title` = String, `caption` = String WHERE `_id` = **String**...blah blah blah.  
+**NB**: This query translates to => UPDATE `Palettes` SET `title` = String, `caption` = String WHERE `_id` = **String**.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
-The **addPalettes** query returns an updated Palette document.
+The **updatePalettes** query returns an updated Palette document.
 
 
 #### updatePlatform
@@ -666,9 +666,9 @@ The **addPalettes** query returns an updated Palette document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-**NB**: This query translates to => UPDATE `Platforms` SET `title` = String, `caption` = String WHERE `_id` = **String**...blah blah blah.  
+**NB**: This query translates to => UPDATE `Platforms` SET `title` = String, `caption` = **String** WHERE `_id` = **String**.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
-The *addPlatforms* query returns an updated Platform document.
+The *updatePlatforms* query returns an updated Platform document.
 
 
 #### removeDocs
@@ -688,7 +688,7 @@ The *addPlatforms* query returns an updated Platform document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-**NB**: This query translates to => DELETE FROM DATABASE WHERE `palette _id` = String, `paltform _id` = String ... blah blah blah.  
+**NB**: This query translates to => DELETE FROM DATABASE WHERE `palette _id` = **String**, `platform _id` = **String**.  
 The **String** in the query must point to the `_id` of the document you want to delete. 
 The query returns a **boolean** for the type of document removed.
 
