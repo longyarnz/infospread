@@ -5,20 +5,21 @@
 * Email: longyarnz@gmail.com
 
 
-## API Endpoints
+### API Endpoints
 
 There are following endpoints (2) exposed to the API:
-1) infospread.herokuapp.com/api/xxxx: There are 4 options for the *xxxx* fields:
-  * Customer: *infospread.herokuapp.com/api/customers* loads all the customer data in the database.
-  * Palettes: *infospread.herokuapp.com/api/palettes* loads all the palette data in the database.
-  * Platform: *infospread.herokuapp.com/api/platforms* loads all the platform data in the database.
-  * Viewer: *infospread.herokuapp.com/api/viewers* loads all the viewer data in the database.
+1) **infospread.herokuapp.com/api/_xxxx_**: There are 4 options for the *xxxx* fields:
+     * **infospread.herokuapp.com/api/customers** loads all the customer data in the database.
+     * **infospread.herokuapp.com/api/palettes** loads all the palette data in the database.
+     * **infospread.herokuapp.com/api/platforms** loads all the platform data in the database.
+     * **infospread.herokuapp.com/api/viewers** loads all the viewer data in the database.
 
-2) infospread.herokuapp.com/spread: This endpoint collects queries and executes them against the database. When a request is sent to the API, it validates the request before sending to the Mongo server. Prequisites for a valid request are:
-  * It must be sent via the http *POST* method.
-  * It must contain a request object in JSON format.
-  * The request JSON must contain contain a *query* field and an optional *variables* field: The posted request must contain a query field where the query name is stored. All possible queries are listed under the *Using Queries Topic*.
-  * The Content-Type header of the request must be set to *application/json*.
+2) **infospread.herokuapp.com/spread**: This endpoint collects queries and executes them against the database. When a request is sent to the API, it validates the request and sends it to the Mongo server.  
+Prerequisites for a valid request are:
+     * It must be sent via the http **POST** method.
+     * It must contain a request object in JSON format.
+     * The request JSON must contain contain a **query** field and an optional **variables** field: The posted request must contain a query field where the query name is stored. All possible queries are listed under the *Using Queries Topic*.
+     * The Content-Type header of the request must be set to *application/json*.
 
 Example:
   ```js
@@ -42,7 +43,7 @@ Example:
   ).then(response => response.json()); // Server response must be converted from JSON to literal Object
 ```
   
-  *OR*
+  **OR**
 
 ```js
   const URI = 'infospread.herokuapp.com/spread';
@@ -53,8 +54,8 @@ Example:
     variables: {
       options: ["deliverables", "users", "systems"]
     }
-  }
-  // REQUEST must be parsed into JSON
+  }  
+  // REQUEST must be parsed into JSON  
   REQUEST = JSON.stringify(REQUEST);
   return new Promise((resolve, reject) => {
     const ajax = new XMLHttpRequest();
@@ -69,65 +70,64 @@ Example:
     }
   }
   ```
+  
 
-
-## onePalette
+#### onePalette
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'onePalette',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
-The *onePalette* query returns one document of type *Palette* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
+The **onePalette** query returns one document of type **Palette** from the API. The query takes a **variables** object with a key of **options** and a value which represents the unique ID! of the document.
 
 
-## oneCustomer
+#### oneCustomer
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'oneCustomer',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
-The *oneCustomer* query returns one document of type *Customer* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
+The **oneCustomer** query returns one document of type *Customer* from the API. The query takes a **variables** object with a key of **options** and a value which represents the unique ID! of the document.
 
 
-## oneViewer
+#### oneViewer
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'oneViewer',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-The *oneViewer* query returns one document of type *Viewer* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
+The **oneViewer** query returns one document of type *Viewer* from the API. The query takes a **variables** object with a key of **options** and a value which represents the unique ID! of the document.
 
 
-## onePlatform
+#### onePlatform
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'onePlatform',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-The *onePlatform* query returns one document of type *Platform* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
-
+The **onePlatform** query returns one document of type **Platform** from the API. The query takes a **variables** object with a key of **options** and a value which represents the unique ID! of the document.
 
 
 #### getPalettes
@@ -151,12 +151,12 @@ The *onePlatform* query returns one document of type *Platform* from the API. Th
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => SELECT FROM `palettes` WHERE `_id` = String AND `title` = String AND blah blah blah.
+**NB**: This query translates to => SELECT FROM `palettes` WHERE `_id` = **String** AND `title` = **String** AND blah blah blah.
 
-The *getPalettes* query returns an array of documents of type *Palette* from the API. The query takes a *variables* object with the following keys:
-* options: it takes an object with the keys specified in the example above.
-* limit: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
-* sort: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
+The **getPalettes** query returns an array of documents of type **Palette** from the API. The query takes a **variables** object with the following keys:
+   * **options**: it takes an object with the keys specified in the example above.
+   * **limit**: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
+   * **sort**: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
 
 #### searchPalettes
 ``` js
@@ -172,12 +172,12 @@ The *getPalettes* query returns an array of documents of type *Palette* from the
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => SELECT FROM `palettes` WHERE `tags` IN (options).
+**NB**: This query translates to => SELECT FROM `palettes` WHERE `tags` IN (options).
 
-The *searchPalettes* query returns an array of documents of type *Palette* from the API. The query takes a *variables* object with the following keys:
-* options: it takes an array of tags to search against. This query is suited for searching the database against the interests of the viewer.
-* limit: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
-* sort: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
+The **searchPalettes** query returns an array of documents of type **Palette** from the API. The query takes a **variables** object with the following keys:
+* **options**: it takes an array of tags to search against. This query is suited for searching the database against the interests of the viewer.
+* **limit**: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
+* **sort**: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
 
 
 #### getCustomers
@@ -201,9 +201,9 @@ The *searchPalettes* query returns an array of documents of type *Palette* from 
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => SELECT FROM `customers` WHERE `_id` = String AND `_name` = String AND blah blah blah.
+**NB**: This query translates to => SELECT FROM `customers` WHERE `_id` = **String** AND `_name` = **String** AND blah blah blah.
 
-The *getCustomers* query returns an array of documents of type *Customer* from the API. The query takes a *variables* object with the same explanation as mentioned above for *Palettes*
+The **getCustomers** query returns an array of documents of type **Customer** from the API. The query takes a **variables** object with the same explanation as mentioned above for **Palettes**
 
 
 #### getViewers
@@ -227,9 +227,9 @@ The *getCustomers* query returns an array of documents of type *Customer* from t
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => SELECT FROM `Viewers` WHERE `_id` = String AND `_name` = String AND blah blah blah.
+**NB**: This query translates to => SELECT FROM `Viewers` WHERE `_id` = **String** AND `_name` = **String** AND blah blah blah.
 
-The *getViewers* query returns an array of documents of type *Viewer* from the API. The query takes a *variables* object with the same explanation as mentioned above for *Palettes*
+The **getViewers** query returns an array of documents of type **Viewer** from the API. The query takes a **variables** object with the same explanation as mentioned above for **Palettes**
 
 
 #### getPlatforms
@@ -253,9 +253,9 @@ The *getViewers* query returns an array of documents of type *Viewer* from the A
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => SELECT FROM `Platforms` WHERE `_id` = String AND `_name` = String AND blah blah blah.
+**NB**: This query translates to => SELECT FROM `Platforms` WHERE `_id` = **String** AND `_name` = **String** AND blah blah blah.
 
-The *getPlatforms* query returns an array of documents of type *Platform* from the API. The query takes a *variables* object with the same explanation as mentioned above for *Palettes*
+The **getPlatforms** query returns an array of documents of type **Platform** from the API. The query takes a **variables** object with the same explanation as mentioned above for **Palettes**
 
 
 #### addPalettes
@@ -287,9 +287,9 @@ The *getPlatforms* query returns an array of documents of type *Platform* from t
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => INSERT INTO `Palettes` VALUES (`_id`, `title`, blah blah blah.
+**NB**: This query translates to => INSERT INTO `Palettes` VALUES (`_id`, `title`, blah blah blah.
 
-The *addPalettes* query returns an array of palette ID!s.
+The **addPalettes** query returns an array of palette ID!s.
 
 
 #### addPlatforms
@@ -317,11 +317,11 @@ The *addPalettes* query returns an array of palette ID!s.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => INSERT INTO `Platform` VALUES (`_id`, `title`, blah blah blah.
+**NB**: This query translates to => INSERT INTO `Platform` VALUES (`_id`, `title`, blah blah blah.
 
 The *addPlatform* query returns an array of platform ID!s.
 
-*NB*: The _addPalettes_ and _addPlatforms_ query take an array of values for the _options_ key in the _variables_ object, and they return an array of ID!s
+**NB**: The **addPalettes** and **addPlatforms** query take an array of values for the **options** key in the **variables** object, and they return an array of ID!s
 
 
 #### addCustomers
@@ -342,9 +342,9 @@ The *addPlatform* query returns an array of platform ID!s.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => INSERT INTO `Customers` VALUES (`_id`, `_name`, blah blah blah.
+**NB**: This query translates to => INSERT INTO `Customers` VALUES (`_id`, `_name`, blah blah blah.
 
-The *addCustomers* query returns a Customer ID!.
+The **addCustomers** query returns a Customer ID!.
 
 
 #### addViewers
@@ -366,9 +366,9 @@ The *addCustomers* query returns a Customer ID!.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => INSERT INTO `Viewers` VALUES (`_id`, `_name`, blah blah blah.
+**NB**: This query translates to => INSERT INTO `Viewers` VALUES (`_id`, `_name`, blah blah blah.
 
-The *addViewers* query returns a Viewer ID!.
+The **addViewers** query returns a Viewer ID!.
 
 
 #### addTags
@@ -386,9 +386,9 @@ The *addViewers* query returns a Viewer ID!.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `palettes` SET `tags` = options WHERE `_id` = _id;
+**NB**: This query translates to => UPDATE `palettes` SET `tags` = options WHERE `_id` = _id;
 
-The *addTags* query returns a palette ID! and new tags.
+The **addTags** query returns a palette ID! and new tags.
 
 
 #### removeTags
@@ -406,9 +406,9 @@ The *addTags* query returns a palette ID! and new tags.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `palettes` SET `tags` = null WHERE `_id` = _id;
+**NB**: This query translates to => UPDATE `palettes` SET `tags` = null WHERE `_id` = _id;
 
-The *removeTags* query returns a palette ID! and remaining tags.
+The **removeTags** query returns a palette ID! and remaining tags.
 
 
 #### addinterests
@@ -426,9 +426,9 @@ The *removeTags* query returns a palette ID! and remaining tags.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `viewers` SET `interests` = `[String]` WHERE `_id` = _id;
+**NB**: This query translates to => UPDATE `viewers` SET `interests` = `[String]` WHERE `_id` = _id;
 
-The *addinterests* query returns a viewer ID! and new interests.
+The **addinterests** query returns a viewer ID! and new interests.
 
 
 #### removeInterests
@@ -446,9 +446,9 @@ The *addinterests* query returns a viewer ID! and new interests.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `viewers` SET `interests` = null WHERE `_id` = _id;
+**NB**: This query translates to => UPDATE `viewers` SET `interests` = null WHERE `_id` = _id;
 
-The *removeInterests* query returns a viewer ID! and remaining interests.
+The **removeInterests** query returns a viewer ID! and remaining interests.
 
 
 #### updateViewer
@@ -470,9 +470,9 @@ The *removeInterests* query returns a viewer ID! and remaining interests.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `Viewers` SET `_name` = String, `email` = String WHERE `_id` = String...blah blah blah.  
+**NB**: This query translates to => UPDATE `Viewers` SET `_name` = String, `email` = String WHERE `_id` = **String**...blah blah blah.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
-The *addViewers* query returns an updated Viewer document.
+The **addViewers** query returns an updated Viewer document.
 
 
 #### updateCustomer
@@ -494,9 +494,9 @@ The *addViewers* query returns an updated Viewer document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `Customers` SET `_name` = String, `email` = String WHERE `_id` = String...blah blah blah.  
+**NB**: This query translates to => UPDATE `Customers` SET `_name` = String, `email` = String WHERE `_id` = **String**...blah blah blah.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
-The *addCustomers* query returns an updated Customer document.
+The **addCustomers** query returns an updated Customer document.
 
 
 #### updatePalette
@@ -519,9 +519,9 @@ The *addCustomers* query returns an updated Customer document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `Palettes` SET `title` = String, `caption` = String WHERE `_id` = String...blah blah blah.  
+**NB**: This query translates to => UPDATE `Palettes` SET `title` = String, `caption` = String WHERE `_id` = **String**...blah blah blah.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
-The *addPalettes* query returns an updated Palette document.
+The **addPalettes** query returns an updated Palette document.
 
 
 #### updatePlatform
@@ -541,7 +541,7 @@ The *addPalettes* query returns an updated Palette document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => UPDATE `Platforms` SET `title` = String, `caption` = String WHERE `_id` = String...blah blah blah.  
+**NB**: This query translates to => UPDATE `Platforms` SET `title` = String, `caption` = String WHERE `_id` = **String**...blah blah blah.  
 The `_id` is the auto-generated primary key for all documents. Use it as the ultimate identifier for all records.  
 The *addPlatforms* query returns an updated Platform document.
 
@@ -563,6 +563,6 @@ The *addPlatforms* query returns an updated Platform document.
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => DELETE FROM DATABASE WHERE `palette _id` = String, `paltform _id` = String ... blah blah blah.  
-The _String_ in the query must point to the `_id` of the document you want to delete. 
-The query returns a *boolean* for the type of document removed.
+**NB**: This query translates to => DELETE FROM DATABASE WHERE `palette _id` = String, `paltform _id` = String ... blah blah blah.  
+The **String** in the query must point to the `_id` of the document you want to delete. 
+The query returns a **boolean** for the type of document removed.
