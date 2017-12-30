@@ -28,7 +28,6 @@ Palette.getOne = function (_id){
 
 Palette.set = function(palettes){
   connect();
-  
   return this.create(palettes, this.disconnect).then(docs => {
     docs.forEach(({ _id, author }) => {
       Customer.reset({ _id: author }, {'$addToSet': {'palettes': _id}});
@@ -39,7 +38,6 @@ Palette.set = function(palettes){
 
 Palette.reset = function(_id, items){
   connect();
-  
   const check = hasOwnProperty.call(items, 'tags');
   if (!check) throw "'tags' object is present in the query";
   return new Promise(resolve => {

@@ -170,11 +170,11 @@ The queries must be sent in a *JSON* format via *AJAX* or the *FETCH API*. The s
       oneCustomer(options: String): Customer
       oneViewer(options: String): Viewer
       onePlatform(options: String): Platform
-      getpalettes(options: object, limit: Int, sort: String): [Palette]
-      SearchPalettes(tags: [String!]) [Palette]
-      getCustomers(options: object, limit: Int, sort: String): [Customer]
-      getViewers(options: object, limit: Int, sort: String): [Viewer]
-      getPlatforms(options: object, limit: Int, sort: String): [Platform]
+      getpalettes(options: object, limit: Int, sort: {fieldName: 'asc' || 'desc'}): [Palette]
+      SearchPalettes(tags: [String!], limit: Int, sort: {fieldName: 'asc' || 'desc'}) [Palette]
+      getCustomers(options: object, limit: Int, sort: {fieldName: 'asc' || 'desc'}): [Customer]
+      getViewers(options: object, limit: Int, sort: {fieldName: 'asc' || 'desc'}): [Viewer]
+      getPlatforms(options: object, limit: Int, sort: {fieldName: 'asc' || 'desc'}): [Platform]
       addCustomer(options: object): Customer
       updateCustomer(options: object): Customer
       addPalette(options: [object]): [Palette]
@@ -268,7 +268,7 @@ The *onePlatform* query returns one document of type *Platform* from the API. Th
         author: String // Customer ID! for the customer who created the palette.
       },
       limit: 'Number',
-      sort: {createdAt: 'asc'} || {_id: 'desc'} || {title: 'asc'} // etc
+      sort: {fieldName: 'asc' || 'desc'}
     }
   }
   REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
@@ -280,36 +280,28 @@ The *onePlatform* query returns one document of type *Platform* from the API. Th
 The *getPalettes* query returns an array of documents of type *Palette* from the API. The query takes a *variables* object with the following keys:
 * options: it takes an object with the keys specified in the example above.
 * limit: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
-* sort: it takes a String type value that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: sort: '_id' => ASC based on field '_id' OR sort: '-_id' for DESC based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
+* sort: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
 
 #### searchPalettes
 ``` js
   const REQUEST  = {
     query: 'searchPalettes',
     variables: {
-      options: {
-        _id: String,
-        title: String,
-        category: String,
-        uri: String,
-        tags: String,
-        author: String // Customer ID! for the customer who created the palette.
-      },
-      limit: 'Number',
-      sort: {createdAt: 'asc'} || {_id: 'desc'} || {title: 'asc'} // etc
+      options: [String],
+      limit: Number,
+      sort: {fieldName: 'asc' || 'desc'}
     }
   }
   REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
   const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
-*NB*: This query translates to => SELECT FROM `palettes` WHERE `_id` = String AND `title` = String AND blah blah blah.
+*NB*: This query translates to => SELECT FROM `palettes` WHERE `tags` IN (options).
 
-The *getPalettes* query returns an array of documents of type *Palette* from the API. The query takes a *variables* object with the following keys:
-* options: it takes an object with the keys specified in the example above.
+The *searchPalettes* query returns an array of documents of type *Palette* from the API. The query takes a *variables* object with the following keys:
+* options: it takes an array of tags to search against. This query is suited for searching the database against the interests of the viewer.
 * limit: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
-* sort: it takes a String type value that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: sort: '_id' => ASC based on field '_id' OR sort: '-_id' for DESC based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
-
+* sort: it takes a key/value object that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: `sort: {_id:'asc'}` based on field '_id' OR `sort: {_id: 'desc'}` based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
 
 
 #### getCustomers
@@ -326,7 +318,7 @@ The *getPalettes* query returns an array of documents of type *Palette* from the
         email: String
       },
       limit: 'Number',
-      sort: String
+      sort: {fieldName: 'asc' || 'desc'}
     }
   }
   REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
@@ -352,7 +344,7 @@ The *getCustomers* query returns an array of documents of type *Customer* from t
         email: String
       },
       limit: 'Number',
-      sort: String
+      sort: {fieldName: 'asc' || 'desc'}
     }
   }
   REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
@@ -378,7 +370,7 @@ The *getViewers* query returns an array of documents of type *Viewer* from the A
         email: String
       },
       limit: 'Number',
-      sort: String
+      sort: {fieldName: 'asc' || 'desc'}
     }
   }
   REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
@@ -501,6 +493,86 @@ The *addCustomers* query returns a Customer ID!.
 *NB*: This query translates to => INSERT INTO `Viewers` VALUES (`_id`, `_name`, blah blah blah.
 
 The *addViewers* query returns a Viewer ID!.
+
+
+#### addTags
+``` js
+  const REQUEST  = {
+    query: 'addTags',
+    variables: {
+      options: {
+        _id: String,
+        tags: [String]
+      }
+    }
+  }
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
+```
+
+*NB*: This query translates to => UPDATE `palettes` SET `tags` = options WHERE `_id` = _id;
+
+The *addTags* query returns a palette ID! and new tags.
+
+
+#### removeTags
+``` js
+  const REQUEST  = {
+    query: 'removeTags',
+    variables: {
+      options: {
+        _id: String,
+        tags: [String]
+      }
+    }
+  }
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
+```
+
+*NB*: This query translates to => UPDATE `palettes` SET `tags` = null WHERE `_id` = _id;
+
+The *removeTags* query returns a palette ID! and remaining tags.
+
+
+#### addinterests
+``` js
+  const REQUEST  = {
+    query: 'addinterests',
+    variables: {
+      options: {
+        _id: String,
+        interests: [String]
+      }
+    }
+  }
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
+```
+
+*NB*: This query translates to => UPDATE `viewers` SET `interests` = `[String]` WHERE `_id` = _id;
+
+The *addinterests* query returns a viewer ID! and new interests.
+
+
+#### removeInterests
+``` js
+  const REQUEST  = {
+    query: 'removeInterests',
+    variables: {
+      options: {
+        _id: String,
+        interests: [String]
+      }
+    }
+  }
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
+```
+
+*NB*: This query translates to => UPDATE `viewers` SET `interests` = null WHERE `_id` = _id;
+
+The *removeInterests* query returns a viewer ID! and remaining interests.
 
 
 #### updateViewer
