@@ -88,6 +88,72 @@ The schemas are defined below:
   ```
 
 
+### API Endpoints
+
+There are following endpoints (2) exposed to the API:
+1) infospread.herokuapp.com/api/xxxx: There are 4 options for the *xxxx* fields:
+  * Customer: *infospread.herokuapp.com/api/customers* loads all the customer data in the database.
+  * Palettes: *infospread.herokuapp.com/api/palettes* loads all the palette data in the database.
+  * Platform: *infospread.herokuapp.com/api/platforms* loads all the platform data in the database.
+  * Viewer: *infospread.herokuapp.com/api/viewers* loads all the viewer data in the database.
+
+2) infospread.herokuapp.com/spread: This endpoint collects queries and executes them against the database. When a request is sent to the API, it validates the request before sending to the Mongo server. Prequisites for a valid request are:
+  * It must be sent via the http *POST* method.
+  * It must contain a request object in JSON format.
+  * The request JSON must contain contain a *query* field and an optional *variables* field: The posted request must contain a query field where the query name is stored. All possible queries are listed under the *Using Queries Topic*.
+  * The Content-Type header of the request must be set to *application/json*.
+
+Example:
+  ```js
+  const URI = 'infospread.herokuapp.com/spread';
+  const CONTENT_TYPE = 'application/json';
+  const METHOD = 'POST';
+  const REQUEST = {
+    query: "searchPalettes",
+    variables: {
+      options: ["deliverables", "users", "systems"]
+    }
+  }
+  // REQUEST must be parsed into JSON
+  REQUEST = JSON.stringify(REQUEST);
+  return fetch(URI, {
+    body: REQUEST,
+    method: METHOD, 
+    headers: {
+      'Content-Type': CONTENT_TYPE
+    }
+  ).then(response => response.json()); // Server response must be converted from JSON to literal Object
+```
+  
+  *OR*
+
+```js
+  const URI = 'infospread.herokuapp.com/spread';
+  const CONTENT_TYPE = 'application/json';
+  const METHOD = 'POST';
+  const REQUEST = {
+    query: "searchPalettes",
+    variables: {
+      options: ["deliverables", "users", "systems"]
+    }
+  }
+  // REQUEST must be parsed into JSON
+  REQUEST = JSON.stringify(REQUEST);
+  return new Promise((resolve, reject) => {
+    const ajax = new XMLHttpRequest();
+    ajax.open(METHOD, URI, true);
+    ajax.setRequestHeader("Content-type", CONTENT_TYPE);
+    ajax.send(REQUEST);
+    ajax.onprogress = progress;
+    ajax.onreadystatechange = () => {
+      if(ajax.readyState === 4 && ajax.status === 200) {
+        resolve(responseHandler(ajax.responseText)); // Server response must be converted from JSON to literal Object
+      }
+    }
+  }
+  ```
+
+
 ### Queries
 The queries opened to this API are static. They contain prescribed data requirements and they output specified type of data.  
 The queries must be sent in a *JSON* format via *AJAX* or the *FETCH API*. The schema of a valid query is as follows:
@@ -105,6 +171,7 @@ The queries must be sent in a *JSON* format via *AJAX* or the *FETCH API*. The s
       oneViewer(options: String): Viewer
       onePlatform(options: String): Platform
       getpalettes(options: object, limit: Int, sort: String): [Palette]
+      SearchPalettes(tags: [String!]) [Palette]
       getCustomers(options: object, limit: Int, sort: String): [Customer]
       getViewers(options: object, limit: Int, sort: String): [Viewer]
       getPlatforms(options: object, limit: Int, sort: String): [Platform]
@@ -117,6 +184,10 @@ The queries must be sent in a *JSON* format via *AJAX* or the *FETCH API*. The s
       addPlatform(options: [object]): [Platform]
       updatePlatform(options: object): Platform
       removeDocs(options: object): Report
+      addTags(tags: TagsInput!): Palette!
+      removeTags(tags: TagsInput!): Palette!
+      addInterests(interests: InterestsInput!): Viewer!
+      removeInterests(interests: InterestsInput!): Viewer!
     }
   `;
 ```
@@ -127,42 +198,42 @@ The queries must be sent in a *JSON* format via *AJAX* or the *FETCH API*. The s
 
 #### onePalette
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'onePalette',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 The *onePalette* query returns one document of type *Palette* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
 
 
 #### oneCustomer
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'oneCustomer',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 The *oneCustomer* query returns one document of type *Customer* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
 
 
 #### oneViewer
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'oneViewer',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 The *oneViewer* query returns one document of type *Viewer* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
@@ -170,14 +241,14 @@ The *oneViewer* query returns one document of type *Viewer* from the API. The qu
 
 #### onePlatform
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'onePlatform',
     variables: {
       options: '1234567890987654321'
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 The *onePlatform* query returns one document of type *Platform* from the API. The query takes a *variables* object with a key of *options* and a value which represents the unique ID! of the document.
@@ -185,7 +256,7 @@ The *onePlatform* query returns one document of type *Platform* from the API. Th
 
 #### getPalettes
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'getPalettes',
     variables: {
       options: {
@@ -197,11 +268,39 @@ The *onePlatform* query returns one document of type *Platform* from the API. Th
         author: String // Customer ID! for the customer who created the palette.
       },
       limit: 'Number',
-      sort: '_id' // OR '-_id' OR 'uri' OR '-uri' blah blah blah
+      sort: {createdAt: 'asc'} || {_id: 'desc'} || {title: 'asc'} // etc
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
+```
+
+*NB*: This query translates to => SELECT FROM `palettes` WHERE `_id` = String AND `title` = String AND blah blah blah.
+
+The *getPalettes* query returns an array of documents of type *Palette* from the API. The query takes a *variables* object with the following keys:
+* options: it takes an object with the keys specified in the example above.
+* limit: it takes a Number type value which determines the number of documents to return. By default, the limit is 1000; so you may omit the limit field.
+* sort: it takes a String type value that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: sort: '_id' => ASC based on field '_id' OR sort: '-_id' for DESC based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
+
+#### searchPalettes
+``` js
+  const REQUEST  = {
+    query: 'searchPalettes',
+    variables: {
+      options: {
+        _id: String,
+        title: String,
+        category: String,
+        uri: String,
+        tags: String,
+        author: String // Customer ID! for the customer who created the palette.
+      },
+      limit: 'Number',
+      sort: {createdAt: 'asc'} || {_id: 'desc'} || {title: 'asc'} // etc
+    }
+  }
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => SELECT FROM `palettes` WHERE `_id` = String AND `title` = String AND blah blah blah.
@@ -212,9 +311,10 @@ The *getPalettes* query returns an array of documents of type *Palette* from the
 * sort: it takes a String type value that determines how returned data is arranged. The data collected can arranged in ASC or DESC based on any field in the document. Example: sort: '_id' => ASC based on field '_id' OR sort: '-_id' for DESC based on field '_id'. By default, data is collected from newest to oldest, so you may omit the sort field.
 
 
+
 #### getCustomers
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'getCustomers',
     variables: {
       options: {
@@ -229,8 +329,8 @@ The *getPalettes* query returns an array of documents of type *Palette* from the
       sort: String
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => SELECT FROM `customers` WHERE `_id` = String AND `_name` = String AND blah blah blah.
@@ -240,7 +340,7 @@ The *getCustomers* query returns an array of documents of type *Customer* from t
 
 #### getViewers
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'getViewers',
     variables: {
       options: {
@@ -255,8 +355,8 @@ The *getCustomers* query returns an array of documents of type *Customer* from t
       sort: String
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => SELECT FROM `Viewers` WHERE `_id` = String AND `_name` = String AND blah blah blah.
@@ -266,7 +366,7 @@ The *getViewers* query returns an array of documents of type *Viewer* from the A
 
 #### getPlatforms
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'getPlatforms',
     variables: {
       options: {
@@ -281,8 +381,8 @@ The *getViewers* query returns an array of documents of type *Viewer* from the A
       sort: String
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => SELECT FROM `Platforms` WHERE `_id` = String AND `_name` = String AND blah blah blah.
@@ -292,7 +392,7 @@ The *getPlatforms* query returns an array of documents of type *Platform* from t
 
 #### addPalettes
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'addPalettes',
     variables: {
       options: [
@@ -315,8 +415,8 @@ The *getPlatforms* query returns an array of documents of type *Platform* from t
       ]
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => INSERT INTO `Palettes` VALUES (`_id`, `title`, blah blah blah.
@@ -326,7 +426,7 @@ The *addPalettes* query returns an array of palette ID!s.
 
 #### addPlatforms
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'addPlatforms',
     variables: {
       options: [
@@ -345,8 +445,8 @@ The *addPalettes* query returns an array of palette ID!s.
       ]
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => INSERT INTO `Platform` VALUES (`_id`, `title`, blah blah blah.
@@ -358,7 +458,7 @@ The *addPlatform* query returns an array of platform ID!s.
 
 #### addCustomers
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'addCustomers',
     variables: {
       options: {
@@ -370,8 +470,8 @@ The *addPlatform* query returns an array of platform ID!s.
       }
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => INSERT INTO `Customers` VALUES (`_id`, `_name`, blah blah blah.
@@ -381,7 +481,7 @@ The *addCustomers* query returns a Customer ID!.
 
 #### addViewers
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'addViewers',
     variables: {
       options: {
@@ -394,8 +494,8 @@ The *addCustomers* query returns a Customer ID!.
       }
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => INSERT INTO `Viewers` VALUES (`_id`, `_name`, blah blah blah.
@@ -405,7 +505,7 @@ The *addViewers* query returns a Viewer ID!.
 
 #### updateViewer
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'updateViewer',
     variables: {
       options: {
@@ -418,8 +518,8 @@ The *addViewers* query returns a Viewer ID!.
       }
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => UPDATE `Viewers` SET `_name` = String, `email` = String WHERE `_id` = String...blah blah blah.  
@@ -429,7 +529,7 @@ The *addViewers* query returns an updated Viewer document.
 
 #### updateCustomer
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'updateCustomer',
     variables: {
       options: {
@@ -442,8 +542,8 @@ The *addViewers* query returns an updated Viewer document.
       }
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => UPDATE `Customers` SET `_name` = String, `email` = String WHERE `_id` = String...blah blah blah.  
@@ -453,7 +553,7 @@ The *addCustomers* query returns an updated Customer document.
 
 #### updatePalette
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'updatePalette',
     variables: {
       options: {
@@ -467,8 +567,8 @@ The *addCustomers* query returns an updated Customer document.
       }
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => UPDATE `Palettes` SET `title` = String, `caption` = String WHERE `_id` = String...blah blah blah.  
@@ -478,7 +578,7 @@ The *addPalettes* query returns an updated Palette document.
 
 #### updatePlatform
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'updatePlatform',
     variables: {
       options: {
@@ -489,8 +589,8 @@ The *addPalettes* query returns an updated Palette document.
       }
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => UPDATE `Platforms` SET `title` = String, `caption` = String WHERE `_id` = String...blah blah blah.  
@@ -500,7 +600,7 @@ The *addPlatforms* query returns an updated Platform document.
 
 #### removeDocs
 ``` js
-  const Query  = {
+  const REQUEST  = {
     query: 'removeDocs',
     variables: {
       options: {
@@ -511,8 +611,8 @@ The *addPlatforms* query returns an updated Platform document.
       }
     }
   }
-  Query = JSON.stringify(Query); // convert Query to a JSON object
-  const serverResponse = sendQueryAsynchronously(Query);
+  REQUEST = JSON.stringify(REQUEST); // convert REQUEST to a JSON object
+  const serverResponse = sendQueryAsynchronously(REQUEST);
 ```
 
 *NB*: This query translates to => DELETE FROM DATABASE WHERE `palette _id` = String, `paltform _id` = String ... blah blah blah.  

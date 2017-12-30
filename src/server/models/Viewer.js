@@ -14,7 +14,7 @@ const viewerSchema = new Schema({
 
 const Viewer = Mongoose.model('Viewer', viewerSchema);
 
-Viewer.get = function (options = {}, limit = 1000, sort = {createdAt: -1}) {
+Viewer.get = function (options = {}, limit = 1000, sort = {createdAt: 'desc'}) {
   connect();
   return this.find(options, null, { limit, sort }, this.disconnect);
 }
