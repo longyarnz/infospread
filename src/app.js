@@ -49,7 +49,10 @@ App.get('/api/platforms', (req, res) => {
   })
 });
 App.post('/upload', multer({ storage }).any(), (req, res) => res('OK'));
-App.post('/graphql', bodyParser.json({extended: true}), parseQuery, graphHTTP({ schema, rootValue, pretty: true }));
+App.post('/spread', bodyParser.json({extended: true}), parseQuery, graphHTTP({ schema, rootValue, pretty: true }), (req, res) => {
+  console.log(req);
+  res.send("yes");
+});
 App.listen(PORT, HOST, () => {
   clearConsole();
   console.log(`Server Listening at http://${HOST}:${PORT}`);
