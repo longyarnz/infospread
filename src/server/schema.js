@@ -16,7 +16,7 @@ export default `
 		SearchPalettes(tags: [String!], limit: Int, sort: allFields): [Palette]
 	}
 
-	type allFields{
+	input allFields{
 		_id: String
 		caption: String
 		title: String
